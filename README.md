@@ -961,12 +961,12 @@ Users (Admin) (1) ─────< Quotes (N)
 
 
 
-######DataBase Details:
--- INSERT SAMPLE USERS
--- Password for all users: "password123"
---role ENUM('member', 'librarian', 'admin')
--- status of Borrowing  ENUM('pending_pickup', 'borrowed', 'returned', 'overdue') DEFAULT 'pending_pickup',
---status of reservation ENUM('waiting', 'ready', 'collected', 'cancelled') DEFAULT 'waiting',
+#      DataBase Details:
+- INSERT SAMPLE USERS
+- Password for all users: "password123"
+-role ENUM('member', 'librarian', 'admin')
+- status of Borrowing  ENUM('pending_pickup', 'borrowed', 'returned', 'overdue') DEFAULT 'pending_pickup',
+-status of reservation ENUM('waiting', 'ready', 'collected', 'cancelled') DEFAULT 'waiting',
 #  Database Components Summary
 
 ## 🔍 Database Views (7 Views)
