@@ -947,16 +947,9 @@ Users (Admin) (1) ─────< Quotes (N)
        └──────── (N:1) ───────← USERS (admin who added)
 ```
 
-#### ERD
+## Schema
 
-
-
-
-
-
-
-
-
+<img width="1310" height="1276" alt="Untitled (4)" src="https://github.com/user-attachments/assets/3c7b5e0e-fa78-4624-8835-df18d98e108a" />
 
 
 
@@ -965,8 +958,9 @@ Users (Admin) (1) ─────< Quotes (N)
 - INSERT SAMPLE USERS
 - Password for all users: "password123"
 -role ENUM('member', 'librarian', 'admin')
-- status of Borrowing  ENUM('pending_pickup', 'borrowed', 'returned', 'overdue') DEFAULT 'pending_pickup',
--status of reservation ENUM('waiting', 'ready', 'collected', 'cancelled') DEFAULT 'waiting',
+- status of Borrowing  ENUM('pending_pickup', 'borrowed', 'returned', 'overdue') DEFAULT 'pending_pickup'
+ 
+-status of reservation ENUM('waiting', 'ready', 'collected', 'cancelled') DEFAULT 'waiting'
 #  Database Components Summary
 
 ## 🔍 Database Views (7 Views)
