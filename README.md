@@ -949,7 +949,8 @@ Users (Admin) (1) ─────< Quotes (N)
 
 ## Schema
 
-<img width="1310" height="1276" alt="Untitled (4)" src="https://github.com/user-attachments/assets/3c7b5e0e-fa78-4624-8835-df18d98e108a" />
+<img width="1327" height="1276" alt="Untitled (5)" src="https://github.com/user-attachments/assets/dbbaa173-52b4-45a6-bc0f-f2c9093c498e" />
+
 
 
 
