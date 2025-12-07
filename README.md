@@ -961,7 +961,328 @@ Users (Admin) (1) ─────< Quotes (N)
 
 
 
+######DataBase Details:
+-- INSERT SAMPLE USERS
+-- Password for all users: "password123"
+--role ENUM('member', 'librarian', 'admin')
+-- status of Borrowing  ENUM('pending_pickup', 'borrowed', 'returned', 'overdue') DEFAULT 'pending_pickup',
+--status of reservation ENUM('waiting', 'ready', 'collected', 'cancelled') DEFAULT 'waiting',
+#  Database Components Summary
 
+## 🔍 Database Views (7 Views)
+<img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/7f8c87ef-9925-4de5-b6da-f2e0600aeb8e" />
+
+### 1. *active_borrowings*
+*Purpose:* Display all currently active book borrowings with user and book details.
+
+*Returns:*
+- Borrowing details (ID, dates, status, cost, payment status)
+- User information (ID, username, email)
+- Book details (ID, title, cover image)
+- Author name
+- Days until due / days overdue
+
+*Use Case:* Track current borrowings, identify upcoming due dates, monitor overdue items.
+
+---
+
+### 2. *books_catalog*
+*Purpose:* Complete book catalog with availability status and statistics.
+
+*Returns:*
+- Full book details (title, category, description, cover, dates)
+- Author information (name, photo, biography)
+- Availability metrics (total copies, available copies)
+- Pricing information
+- Average rating
+- Review count and total borrows
+- Availability status (available/unavailable)
+
+*Use Case:* Display books in member interface, check availability, show statistics.
+
+---
+
+### 3. *user_statistics*
+*Purpose:* Comprehensive reading statistics for each member.
+
+*Returns:*
+- User profile (ID, username, email, registration date)
+- Borrowing metrics (total, active, returned)
+- Active reservations count
+- Financial data (total spent, fines, unpaid fines)
+- Reading count
+- Favorite books count
+
+*Use Case:* Member profile dashboard, library analytics, member engagement tracking.
+
+---
+
+### 4. *popular_books*
+*Purpose:* Rank books by popularity based on multiple metrics.
+
+*Returns:*
+- Book details (ID, title, cover, category)
+- Author name
+- Average rating
+- Borrow count
+- Review count
+- Reservation count
+
+*Use Case:* Homepage recommendations, trending books section, collection development insights.
+
+---
+
+### 5. *financial_overview*
+*Purpose:* Monthly financial performance analysis.
+
+*Returns:*
+- Month identifier
+- Total transactions
+- Revenue breakdown (total, paid, pending)
+- Fine revenue (total, collected)
+- Total income
+
+*Use Case:* Admin financial dashboard, revenue tracking, monthly reports.
+
+---
+
+### 6. *overdue_books_report*
+*Purpose:* List all overdue borrowings with calculated fines.
+
+*Returns:*
+- Borrowing ID
+- User details (ID, username, email)
+- Book title
+- Borrow and due dates
+- Days overdue
+- Calculated fine amount
+- Payment status
+
+*Use Case:* Librarian dashboard, fine collection, reminder notifications.
+
+---
+
+### 7. *category_performance*
+*Purpose:* Analyze performance metrics by book category.
+
+*Returns:*
+- Category name
+- Total books and copies
+- Available copies
+- Average category rating
+- Total borrows
+- Total reviews
+
+*Use Case:* Collection development, identify popular categories, inventory planning.
+
+---
+
+## ⚡ Database Triggers (7 Triggers)
+<img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/e5ae3b46-5990-43ed-818b-788d38fb4716" />
+
+### 1. *update_book_rating_after_insert*
+*Event:* AFTER INSERT on comments
+
+*Action:* Automatically recalculates and updates the average rating for a book when a new comment/review is added.
+
+*Benefits:* Ensures ratings are always current without manual updates.
+
+---
+
+### 2. *update_book_rating_after_update*
+*Event:* AFTER UPDATE on comments
+
+*Action:* Recalculates book average rating when an existing comment is modified.
+
+*Benefits:* Maintains accurate ratings when users edit their reviews.
+
+---
+
+### 3. *update_book_rating_after_delete*
+*Event:* AFTER DELETE on comments
+
+*Action:* Recalculates book average rating when a comment is removed. Sets to 0 if no comments remain.
+
+*Benefits:* Prevents outdated ratings when reviews are deleted.
+
+---
+
+### 4. *decrease_copies_on_borrow*
+*Event:* AFTER INSERT on borrowings
+
+*Action:* Decreases the available_copies count by 1 when a new borrowing is created with status 'pending_pickup' or 'borrowed'.
+
+*Benefits:* Real-time inventory tracking, prevents overbooking.
+
+---
+
+### 5. *increase_copies_on_return*
+*Event:* AFTER UPDATE on borrowings
+
+*Action:* Increases available_copies by 1 when borrowing status changes to 'returned'.
+
+*Benefits:* Automatically updates inventory when books are returned.
+
+---
+
+### 6. *create_user_preferences*
+*Event:* AFTER INSERT on users
+
+*Action:* Automatically creates an empty user_preferences record for new users with initialized JSON arrays.
+
+*Benefits:* Ensures every user has a preferences record, prevents null reference errors.
+
+---
+
+### 7. *check_overdue_status*
+*Event:* BEFORE UPDATE on borrowings
+
+*Action:* Automatically changes status to 'overdue' when due date has passed and book is still borrowed.
+
+*Benefits:* Automated overdue detection without manual intervention.
+
+---
+
+## 🔧 Stored Procedures (6 Procedures)
+<img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/46bf8fcd-40ec-47b8-94e4-d1d408aab5a7" />
+
+### 1. *calculate_overdue_fine*
+sql
+CALL calculate_overdue_fine(borrowing_id, OUT fine_amount, OUT days_overdue)
+
+
+*Purpose:* Calculate fine amount for an overdue borrowing.
+
+*Parameters:*
+- IN p_borrowing_id: The borrowing ID to check
+- OUT p_fine_amount: Calculated fine (days × rate)
+- OUT p_days_overdue: Number of days past due date
+
+*Logic:*
+- Retrieves fine rate from settings
+- Calculates days between due date and return date (or current date)
+- Returns fine = days_overdue × fine_per_day
+- Returns 0 if not overdue
+
+*Use Case:* Calculate fines during book return, display owed amounts to users.
+
+---
+
+### 2. *process_book_return*
+sql
+CALL process_book_return(borrowing_id, librarian_id)
+
+
+*Purpose:* Complete book return process including fine creation.
+
+*Parameters:*
+- IN p_borrowing_id: The borrowing to process
+- IN p_librarian_id: Librarian processing the return
+
+*Logic:*
+- Calls calculate_overdue_fine to check for fines
+- Updates borrowing status to 'returned'
+- Sets return_date to current date
+- Creates fine record if overdue
+- Logs activity
+
+*Use Case:* Librarian processes book returns at the desk.
+
+---
+
+### 3. *create_borrowing_request*
+sql
+CALL create_borrowing_request(user_id, book_id, days, OUT borrowing_id, OUT total_cost, OUT message)
+
+
+*Purpose:* Create a new borrowing request with validation.
+
+*Parameters:*
+- IN p_user_id: Member requesting the book
+- IN p_book_id: Book to borrow
+- IN p_days: Number of days to borrow
+- OUT p_borrowing_id: Created borrowing ID (or NULL if failed)
+- OUT p_total_cost: Calculated rental cost
+- OUT p_message: Success or error message
+
+*Logic:*
+- Checks book availability
+- Validates user hasn't exceeded borrowing limit
+- Calculates total cost (days × price_per_day)
+- Sets due date
+- Creates borrowing record
+- Logs activity
+
+*Use Case:* Member requests to borrow a book through the website.
+
+---
+
+### 4. *get_book_recommendations*
+sql
+CALL get_book_recommendations(user_id, limit)
+
+
+*Purpose:* Generate personalized book recommendations for a user.
+
+*Parameters:*
+- IN p_user_id: User to get recommendations for
+- IN p_limit: Maximum number of recommendations
+
+*Logic:*
+- Retrieves user's favorite categories from preferences
+- Finds highly-rated books (rating ≥ 4.0)
+- Excludes books user has already read
+- Orders by rating and recency
+- Returns top N recommendations
+
+*Use Case:* Display "Recommended for You" section on homepage.
+
+---
+
+### 5. *update_queue_positions*
+sql
+CALL update_queue_positions(book_id)
+
+
+*Purpose:* Reorder reservation queue positions for a specific book.
+
+*Parameters:*
+- IN p_book_id: Book to update queue for
+
+*Logic:*
+- Finds all waiting reservations for the book
+- Orders by reservation date (first-come-first-served)
+- Updates queue_position (1, 2, 3, etc.)
+
+*Use Case:* Maintain fair queue when reservations are added/cancelled.
+
+---
+
+### 6. *get_dashboard_statistics*
+sql
+CALL get_dashboard_statistics()
+
+
+*Purpose:* Retrieve comprehensive statistics for admin dashboard.
+
+*Returns (Multiple Result Sets):*
+
+*Set 1 - Book Statistics:*
+- Total books, total copies, available copies, borrowed copies
+
+*Set 2 - User Statistics:*
+- Total users, members, librarians, active users
+
+*Set 3 - Borrowing Statistics:*
+- Total borrowings, active, overdue, returned
+
+*Set 4 - Financial Statistics:*
+- Total revenue, paid revenue, pending revenue
+
+*Set 5 - Fine Statistics:*
+- Total fines, fines collected, fines pending
+
+*Use Case:* Admin dashboard overview, generate reports, monitor library health.
 
 
 ## 🔐 Security Features
