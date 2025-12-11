@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Library Management System</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        background-color: #f0e8d8;
+        margin: 0;
+        padding: 0;
+      }
+
+      .page {
+        display: none;
+      }
+
+      .page.active {
+        display: block;
+      }
+
+      /* ========== HOME PAGE ========== */
+      .home-container {
+        background: #f0e8d8;
+        border-radius: 15px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        margin: 0;
+        padding: 30px;
+        position: relative;
+        width: 100%;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 20px;
+        border-bottom: 2px solid #ddd;
+        margin-bottom: 30px;
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto 30px;
+        background-color: #2c3e50;
+        color: white;
+        padding: 15px 30px;
+      }
+
+      .logo {
+        font-size: 24px;
+        font-weight: bold;
+        color: white;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 20px;
+        font-size: 14px;
+        align-items: center;
+      }
+
+      .nav-links a,
+      .nav-links button {
+        text-decoration: none;
+        color: white;
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+        padding: 5px 10px;
+        border-radius: 5px;
+        transition: color 0.3s;
+      }
+
+      .nav-links a:hover,
+      .nav-links button:hover {
+        color: #e67e22;
+      }
+
+      .nav-links a.active {
+        color: #e67e22;
+        font-weight: bold;
+      }
+
+      .sign-up-btn {
+        background-color: #e67e22;
+        color: white !important;
+        font-weight: bold;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+
+      .main-content {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .text-section {
+        flex: 1;
+      }
+
+      .text-section h1 {
+        font-size: 36px;
+        color: #2c3e50;
+        margin-bottom: 20px;
+        font-weight: bold;
+      }
+
+      .text-section p {
+        font-size: 16px;
+        color: #34495e;
+        margin-bottom: 15px;
+      }
+
+      .features-list {
+        font-size: 16px;
+        color: #34495e;
+        line-height: 1.6;
+        margin-left: 20px;
+        margin-bottom: 30px;
+      }
+
+      .home-buttons {
+        display: flex;
+        gap: 15px;
+      }
+
+      .home-button {
+        flex: 1;
+        padding: 12px;
+        background-color: #e67e22;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .home-button:hover {
+        background-color: #d35400;
+      }
+
+      .image-section {
+        flex: 1;
+        text-align: center;
+      }
+
+      .image-section img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 10px;
+      }
+
+      /* ========== LOGIN & REGISTER PAGES ========== */
+      .login-container,
+      .register-container {
+        background: #f0e8d8;
+        border-radius: 15px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        margin: 0;
+        padding: 30px;
+        position: relative;
+        width: 100%;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .login-main,
+      .register-main {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .login-text,
+      .register-text {
+        flex: 1;
+      }
+
+      .login-image,
+      .register-image {
+        flex: 1;
+        text-align: center;
+      }
+
+      .login-image img,
+      .register-image img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 10px;
+      }
+
+      .title {
+        font-size: 22px;
+        color: #2c3e50;
+        margin-bottom: 20px;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+        color: #34495e;
+        font-weight: 500;
+      }
+
+      input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 14px;
+        transition: border 0.3s;
+      }
+
+      input:focus {
+        outline: none;
+        border-color: #e67e22;
+      }
+
+      .password-field {
+        position: relative;
+      }
+
+      .toggle-password {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #7f8c8d;
+        width: 20px;
+        height: 20px;
+      }
+
+      .toggle-password svg {
+        width: 100%;
+        height: 100%;
+      }
+
+      button.auth-btn {
+        width: 100%;
+        padding: 12px;
+        background-color: #e67e22;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      button.auth-btn:hover {
+        background-color: #d35400;
+      }
+
+      .switch-form {
+        text-align: center;
+        margin-top: 20px;
+        color: #7f8c8d;
+      }
+
+      .switch-form a {
+        color: #e67e22;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .error {
+        color: #e74c3c;
+        font-size: 14px;
+        margin-top: 10px;
+        display: none;
+      }
+
+      .success {
+        color: #27ae60;
+        font-size: 16px;
+        margin-top: 10px;
+        display: none;
+        padding: 12px;
+        background-color: #e8f5e9;
+        border-left: 4px solid #27ae60;
+        border-radius: 6px;
+        line-height: 1.5;
+      }
+
+      .success strong {
+        color: #2c3e50;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ========== HOME PAGE ========== -->
+    <div class="page active" id="homePage">
+      <div class="home-container">
+        <div class="header">
+          <div class="logo">
+            <svg
+              width="32"
+              height="32"
+              viewBox="0 0 32 32"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M24 8H8V24H24V8Z"
+                stroke="white"
+                stroke-width="2"
+                fill="none"
+              />
+              <path d="M8 12H24" stroke="white" stroke-width="2" fill="none" />
+              <path d="M8 16H20" stroke="white" stroke-width="2" fill="none" />
+              <path d="M8 20H16" stroke="white" stroke-width="2" fill="none" />
+            </svg>
+            LIBRARY
+          </div>
+          <div class="nav-links">
+            <a href="index.html" id="navHome" class="active">Home</a>
+            <a href="profile.html" id="MyProfile" class="active">MyProfile</a>
+            <button class="sign-up-btn" id="navSignUp">Sign Up</button>
+            <a href="#" id="navCart">🛒</a>
+          </div>
+        </div>
+
+        <div class="main-content">
+          <div class="text-section">
+            <h1>Welcome to the Library Management System!</h1>
+            <p>Here you can:</p>
+            <ul class="features-list">
+              <li>Browse and search for books by title, author, or genre.</li>
+              <li>Reserve books online and manage your borrowings.</li>
+              <li>View detailed book summaries, ratings, and availability.</li>
+              <li>Explore author profiles and their published works.</li>
+              <li>Join the community to share reviews and recommendations.</li>
+              <li>
+                Access your personal dashboard to track your reading history and
+                reservations.
+              </li>
+            </ul>
+            <div class="home-buttons">
+              <button class="home-button" onclick="showPage('loginPage')">
+                Login
+              </button>
+              <button class="home-button" onclick="showPage('registerPage')">
+                Create an Account
+              </button>
+            </div>
+          </div>
+          <div class="image-section">
+            <img
+              src="library-girl.png"
+              alt="Woman reading a book"
+              style="max-width: 80%; height: auto; border-radius: 10px"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== LOGIN PAGE ========== -->
+    <div class="page" id="loginPage">
+      <div class="login-container">
+        <div class="header">
+          <div class="logo">
+            <svg
+              width="32"
+              height="32"
+              viewBox="0 0 32 32"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M24 8H8V24H24V8Z"
+                stroke="white"
+                stroke-width="2"
+                fill="none"
+              />
+              <path d="M8 12H24" stroke="white" stroke-width="2" fill="none" />
+              <path d="M8 16H20" stroke="white" stroke-width="2" fill="none" />
+              <path d="M8 20H16" stroke="white" stroke-width="2" fill="none" />
+            </svg>
+            LIBRARY
+          </div>
+          <div class="nav-links">
+            <!-- <a href="#" onclick="showPage('homePage')" class="active">Home</a> -->
+            <a href="index.html" id="navHome" class="active">Home</a>
+            <a href="profile.html" id="MyProfile" class="active">MyProfile</a>
+            <button class="sign-up-btn" id="navSignUp">Sign Up</button>
+            <a href="#" id="navCart">🛒</a>
+          </div>
+        </div>
+
+        <div class="login-main">
+          <div class="login-text">
+            <h2 class="title">Library Management System</h2>
+            <form id="loginFormElement">
+              <div class="form-group">
+                <label for="loginEmail">Email</label>
+                <input type="email" id="loginEmail" required />
+              </div>
+              <div class="form-group password-field">
+                <label for="loginPassword">Password</label>
+                <input type="password" id="loginPassword" required />
+                <span
+                  class="toggle-password"
+                  onclick="togglePassword('loginPassword')"
+                >
+                  <!-- Eye Open SVG -->
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                    />
+                  </svg>
+                </span>
+              </div>
+              <div class="form-group">
+                <button type="submit" class="auth-btn">Login</button>
+              </div>
+              <div class="switch-form">
+                Don't have an account?
+                <a href="#" id="showRegister">Register new account</a>
+              </div>
+              <div id="loginError" class="error"></div>
+              <div id="loginSuccess" class="success"></div>
+            </form>
+          </div>
+          <div class="login-image">
+            <img
+              src="girl-read.png"
+              alt="Woman reading a book"
+              style="max-width: 70%; height: auto; border-radius: 10px"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== REGISTER PAGE ========== -->
+    <div class="page" id="registerPage">
+      <div class="register-container">
+        <div class="header">
+          <div class="logo">
+            <svg
+              width="32"
+              height="32"
+              viewBox="0 0 32 32"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M24 8H8V24H24V8Z"
+                stroke="white"
+                stroke-width="2"
+                fill="none"
+              />
+              <path d="M8 12H24" stroke="white" stroke-width="2" fill="none" />
+              <path d="M8 16H20" stroke="white" stroke-width="2" fill="none" />
+              <path d="M8 20H16" stroke="white" stroke-width="2" fill="none" />
+            </svg>
+            LIBRARY
+          </div>
+          <div class="nav-links">
+            <!-- <a href="#" onclick="showPage('homePage')" class="active">Home</a> -->
+            <a href="index.html" id="navHome" class="active">Home</a>
+            <a href="profile.html" id="MyProfile" class="active">MyProfile</a>
+            <button class="sign-up-btn" id="navSignUp">Sign Up</button>
+            <a href="#" id="navCart">🛒</a>
+          </div>
+        </div>
+
+        <!-- ✅ هنا التغيير: جعلنا register-main عمودي -->
+        <div
+          class="register-main"
+          style="flex-direction: column; gap: 30px; align-items: center"
+        >
+          <div class="register-text">
+            <h2 class="title">Create an Account</h2>
+            <form id="registerFormElement">
+              <div class="form-group">
+                <label for="fullName">Full Name</label>
+                <input
+                  type="text"
+                  id="fullName"
+                  required
+                  style="
+                    padding: 16px;
+                    font-size: 16px;
+                    border-radius: 10px;
+                    max-width: 500px;
+                    width: 550px;
+                  "
+                />
+              </div>
+              <div class="form-group">
+                <label for="registerEmail">Email</label>
+                <input
+                  type="email"
+                  id="registerEmail"
+                  required
+                  style="
+                    padding: 16px;
+                    font-size: 16px;
+                    border-radius: 10px;
+                    max-width: 500px;
+                    width: 550px;
+                  "
+                />
+              </div>
+              <div class="form-group password-field">
+                <label for="registerPassword">Password</label>
+                <input
+                  type="password"
+                  id="registerPassword"
+                  required
+                  style="
+                    padding: 16px;
+                    font-size: 16px;
+                    border-radius: 10px;
+                    max-width: 500px;
+                    width: 550px;
+                  "
+                />
+                <span
+                  class="toggle-password"
+                  onclick="togglePassword('registerPassword')"
+                >
+                  <!-- Eye Open SVG -->
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                    />
+                  </svg>
+                </span>
+              </div>
+              <div class="form-group password-field">
+                <label for="confirmPassword">Confirm Password</label>
+                <input
+                  type="password"
+                  id="confirmPassword"
+                  required
+                  style="
+                    padding: 16px;
+                    font-size: 16px;
+                    border-radius: 10px;
+                    max-width: 500px;
+                    width: 550px;
+                  "
+                />
+                <span
+                  class="toggle-password"
+                  onclick="togglePassword('confirmPassword')"
+                >
+                  <!-- Eye Open SVG -->
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                    />
+                  </svg>
+                </span>
+              </div>
+              <div class="form-group">
+                <label for="phoneNumber">Phone Number</label>
+                <input
+                  type="tel"
+                  id="phoneNumber"
+                  required
+                  style="
+                    padding: 16px;
+                    font-size: 16px;
+                    border-radius: 10px;
+                    max-width: 500px;
+                    width: 550px;
+                  "
+                />
+              </div>
+              <div class="form-group">
+                <button
+                  type="submit"
+                  class="auth-btn"
+                  style="
+                    padding: 16px;
+                    font-size: 18px;
+                    border-radius: 10px;
+                    max-width: 500px;
+                  "
+                >
+                  Register
+                </button>
+              </div>
+              <div class="switch-form">
+                Already have an account? <a href="#" id="showLogin">Login</a>
+              </div>
+              <div id="registerError" class="error"></div>
+              <div id="registerSuccess" class="success"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // === تثبيت حسابات Admin و Librarian ===
+      const FIXED_ACCOUNTS = {
+        "admin@admin.com": {
+          password: "password123",
+          fullName: "Admin User",
+          role: "admin",
+          joinDate: new Date().toISOString(),
+          id: "admin001",
+        },
+        "librarian@library.com": {
+          password: "libpass123",
+          fullName: "Librarian Staff",
+          role: "librarian",
+          joinDate: new Date().toISOString(),
+          id: "lib001",
+        },
+      };
+
+      function togglePassword(id) {
+        const input = document.getElementById(id);
+        const icon = input.nextElementSibling.querySelector("svg");
+
+        if (input.type === "password") {
+          input.type = "text";
+          // Eye Closed
+          icon.innerHTML =
+            `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.366-3.243m0 0L4.525 6.5M21.375 18.825L13.875 5.175m0 0A2.25 2.25 0 0012 4.5c-.418 0-.825.107-1.185.303M12 19c.418 0 .825-.107 1.185-.303m0 0L20.475 6.5"` +
+            ` stroke="currentColor" />`;
+        } else {
+          input.type = "password";
+          // Eye Open
+          icon.innerHTML =
+            `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />` +
+            `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />`;
+        }
+      }
+
+      function showPage(pageId) {
+        document
+          .querySelectorAll(".page")
+          .forEach((p) => p.classList.remove("active"));
+        document.getElementById(pageId).classList.add("active");
+        document
+          .querySelectorAll(".nav-links a")
+          .forEach((link) => link.classList.remove("active"));
+        if (pageId === "homePage") {
+          document.getElementById("navHome").classList.add("active");
+        }
+      }
+
+      // Navigation
+      document
+        .getElementById("navHome")
+        .addEventListener("click", () => showPage("homePage"));
+      document
+        .getElementById("navSignUp")
+        .addEventListener("click", () => showPage("registerPage"));
+      document.getElementById("showRegister").addEventListener("click", (e) => {
+        e.preventDefault();
+        showPage("registerPage");
+      });
+      document.getElementById("showLogin").addEventListener("click", (e) => {
+        e.preventDefault();
+        showPage("loginPage");
+      });
+
+      // ✅ إضافة Event Listener لزر Sign Up في كل الصفحات
+      document.addEventListener("DOMContentLoaded", function () {
+        const signUpButtons = document.querySelectorAll(".sign-up-btn");
+        signUpButtons.forEach((button) => {
+          button.addEventListener("click", () => {
+            showPage("registerPage");
+          });
+        });
+      });
+
+      // Register – فقط User
+      document
+        .getElementById("registerFormElement")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          const fullName = document.getElementById("fullName").value.trim();
+          const email = document.getElementById("registerEmail").value.trim();
+          const password = document.getElementById("registerPassword").value;
+          const confirmPassword =
+            document.getElementById("confirmPassword").value;
+          const phoneNumber = document
+            .getElementById("phoneNumber")
+            .value.trim();
+
+          const error = document.getElementById("registerError");
+          const success = document.getElementById("registerSuccess");
+          error.style.display = "none";
+          success.style.display = "none";
+
+          if (password !== confirmPassword) {
+            error.textContent = "Passwords don't match!";
+            error.style.display = "block";
+            return;
+          }
+          if (password.length < 6) {
+            error.textContent = "Password must be at least 6 characters!";
+            error.style.display = "block";
+            return;
+          }
+
+          if (email in FIXED_ACCOUNTS) {
+            error.textContent =
+              "This email is reserved for staff. Please use a different email.";
+            error.style.display = "block";
+            return;
+          }
+
+          let users = JSON.parse(localStorage.getItem("users")) || [];
+          if (users.some((u) => u.email === email)) {
+            error.textContent = "Email already registered!";
+            error.style.display = "block";
+            return;
+          }
+
+          users.push({ email, password, fullName, phoneNumber, role: "user" });
+          localStorage.setItem("users", JSON.stringify(users));
+          localStorage.setItem(
+            "currentUser",
+            JSON.stringify({
+              email: email,
+              fullName: fullName,
+              phoneNumber: phoneNumber,
+              role: "user",
+              joinDate: new Date().toISOString(),
+              id: Date.now,
+            })
+          );
+
+          success.innerHTML =
+            "✅ <strong>Registration successful!</strong><br>Please login to access your account.";
+          success.style.display = "block";
+          setTimeout(() => (window.location.href = "profile.html"), 2000);
+        });
+
+      // Login – بدون اختيار Role
+      document
+        .getElementById("loginFormElement")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          const email = document.getElementById("loginEmail").value.trim();
+          const password = document.getElementById("loginPassword").value;
+          const error = document.getElementById("loginError");
+          const success = document.getElementById("loginSuccess");
+          error.style.display = "none";
+          success.style.display = "none";
+
+          // 1. تحقق من Admin أو Librarian
+          if (
+            FIXED_ACCOUNTS[email] &&
+            FIXED_ACCOUNTS[email].password === password
+          ) {
+            const user = FIXED_ACCOUNTS[email];
+            const roleNames = {
+              admin: "Administrator",
+              librarian: "Librarian",
+            };
+            const roleDisplay = roleNames[user.role] || user.role;
+            localStorage.setItem("currentUser", JSON.stringify(user));
+            success.innerHTML = `✅ <strong>Welcome, ${user.fullName}!</strong><br>You are logged in as <strong>${roleDisplay}</strong>.`;
+            success.style.display = "block";
+            setTimeout(() => (window.location.href = "profile.html"), 2000);
+            return;
+          }
+
+          // 2. تحقق من Users العاديين
+          const users = JSON.parse(localStorage.getItem("users")) || [];
+          const user = users.find(
+            (u) => u.email === email && u.password === password
+          );
+
+          if (user) {
+            localStorage.setItem("currentUser", JSON.stringify(user));
+            success.innerHTML = `✅ <strong>Welcome, ${user.fullName}!</strong><br>You are logged in as <strong>User</strong>.`;
+            success.style.display = "block";
+            setTimeout(() => (window.location.href = "profile.html"), 2000);
+          } else {
+            error.textContent = "Invalid email or password!";
+            error.style.display = "block";
+          }
+        });
+    </script>
+  </body>
+</html>
