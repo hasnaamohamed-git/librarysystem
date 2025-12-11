@@ -1,12 +1,11 @@
-<!doctype html>
-<html lang="ar" dir="rtl">
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Library — Quotes</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
-    /* كل الـ CSS زي ما هو عندك، ما غيرتش فيه حاجة */
     :root{
       --nav-blue:#083d6e;
       --card-bg:#fff8f2;
@@ -15,85 +14,98 @@
       --muted:#6b6b6b;
       --radius:14px;
       --shadow: 0 8px 20px rgba(22,22,22,0.12);
-      --glass-shadow: 0 6px 18px rgba(16,24,40,0.08);
     }
-    html,body{height:100%;margin:0;font-family:'Poppins',system-ui,Arial; background: linear-gradient(180deg, #f7efe8 0%, var(--page-bg) 100%);}
-    .app {margin:0;padding:0;box-sizing:border-box;width:100%;}
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Poppins',sans-serif;background:linear-gradient(180deg,#f7efe8,var(--page-bg));min-height:100vh;}
+    
     .topbar{
-        height:70px;background:var(--nav-blue);border-radius:12px;
-        display:flex;align-items:center;gap:18px;padding:12px 24px;color:white;
-        box-shadow:var(--shadow);justify-content:space-between;
+      height:70px;
+      background:var(--nav-blue);
+      border-radius:12px;
+      display:flex;
+      align-items:center;
+      padding:0 30px;
+      color:white;
+      box-shadow:var(--shadow);
+      position:relative;
     }
-    .logo-placeholder {
-        width: 40px; height: 40px; border-radius: 8px;
-        background: #fff9f4; display: flex; align-items: center;
-        justify-content: center; color: var(--nav-blue); font-weight: 700;
-        font-size: 20px;
+    .logo-placeholder{
+      width:40px;height:40px;border-radius:8px;background:#fff9f4;
+      display:flex;align-items:center;justify-content:center;color:var(--nav-blue);
+      font-weight:700;font-size:20px;margin-right:20px;
     }
-    .topbar .search-container{flex:1;display:flex;align-items:center;justify-content:center;}
-    .topbar .search-input {
-        display: flex; align-items: center; background: white;
-        border-radius: 8px; padding: 8px 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        max-width: 500px; width: 100%;
+    .search-container{
+      flex:1;
+      max-width:500px;
     }
-    .topbar .search-input input{
-        border:0; background:transparent; color:#333; outline:none; font-size:16px; width:100%; margin-right:8px;
+    .search-input{
+      display:flex;align-items:center;background:white;border-radius:8px;
+      padding:8px 16px;box-shadow:0 4px 12px rgba(0,0,0,0.1);height:44px;
     }
-    .topbar .icons{display:flex;gap:16px;align-items:center}
-    .content{margin-top:18px;padding: 0 24px 24px 24px;}
-    .panel{background:var(--card-bg);border-radius:var(--radius);box-shadow:var(--glass-shadow);padding:22px;min-height:520px;}
-    .quotes-list{display:flex;flex-direction:column;gap:16px; margin-top: 10px;}
+    .search-input input{
+      border:none;outline:none;background:transparent;width:100%;margin-left:10px;
+      font-size:16px;color:#333;
+    }
+    .icons{
+      display:flex;gap:28px;align-items:center;margin-left:auto;
+    }
+    .icons a{
+      color:white;text-decoration:none;font-weight:600;font-size:15px;transition:0.2s;
+    }
+    .icons a:hover{opacity:0.7;}
+
+    .content{margin:30px;padding:0 30px;}
+    .panel{background:var(--card-bg);border-radius:var(--radius);box-shadow:0 6px 18px rgba(16,24,40,0.08);padding:30px;}
+    .page-header h2{margin:0 0 20px;color:var(--nav-blue);font-size:28px;font-weight:600;}
+
+    .quotes-list{display:flex;flex-direction:column;gap:18px;}
     .quote-card{
-      background:white;border-radius:10px;padding:16px;box-shadow:0 6px 14px rgba(11,22,33,0.05);
-      border-left:4px solid var(--accent);display:flex;gap:12px;align-items:flex-start;
-      justify-content:space-between;position:relative;
+      background:white;border-radius:10px;padding:20px;
+      box-shadow:0 6px 14px rgba(11,22,33,0.05);
+      border-left:5px solid var(--accent);
+      display:flex;justify-content:space-between;align-items:flex-start;gap:16px;
     }
     .quote-main{flex:1;}
-    .quote-card p{margin:0 0 8px 0;font-size:15px;color:#222;line-height:1.45}
-    .quote-card .meta{font-size:13px;color:var(--muted); font-weight: 600;}
+    .quote-card p{
+      margin:0 0 10px;font-size:16px;line-height:1.5;color:#222;
+    }
+    .quote-card .meta{
+      font-size:13.5px;color:var(--muted);font-weight:600;
+    }
     .heart-btn{
-      border:0;background:transparent;font-size:20px;cursor:pointer;padding:8px;
-      border-radius:8px;transition: transform 0.08s ease, color 0.12s ease;color:var(--muted);
-      min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center;
+      background:none;border:none;font-size:26px;cursor:pointer;
+      color:var(--muted);transition:0.2s;padding:8px;border-radius:8px;
     }
-    .heart-btn:active{transform:scale(0.95);}
-    .heart-btn.favorited{color:var(--accent);animation:pop 0.18s ease;}
-    @keyframes pop{0%{transform:scale(0.8);}60%{transform:scale(1.12);}100%{transform:scale(1);}}
-    .page-header h2 {margin: 0; color: var(--nav-blue); font-size: 26px;}
-    .empty-state {color:var(--muted); padding:12px; text-align:center;}
-    @media (max-width:600px){
-      .topbar{flex-direction:column;height:auto;padding:15px;gap:12px;}
-      .search-input{max-width:unset}
-      .quote-card{flex-direction:column;}
-      .heart-btn{align-self:flex-end}
-    }
+    .heart-btn.favorited{color:var(--accent);animation:pop 0.3s;}
+    @keyframes pop{0%{transform:scale(0.8)}60%{transform:scale(1.2)}100%{transform:scale(1)}}
+
+    .empty-state{text-align:center;color:var(--muted);padding:40px;font-size:17px;}
   </style>
 </head>
 <body>
-<div class="app">
 
-  <!-- الـ Topbar المعدل (أضفنا الـ logo والـ icons) -->
-  <div class="topbar">
-    <div class="logo-placeholder">A</div>
+<div class="topbar">
+  <!-- Logo -->
+  <div class="logo-placeholder">A</div>
 
-    <div class="search-container">
-      <div class="search-input">
-        <span class="search-icon">Search</span>
-        <input id="globalSearch" placeholder="Search quotes or authors..." />
-      </div>
+  <!-- Search Bar -->
+  <div class="search-container">
+    <div class="search-input">
+      <span>Search</span>
+      <input type="text" id="globalSearch" placeholder="Search quotes or authors..." />
     </div>
-
-    <!-- هذا العنصر هو اللي بيخلي nav.js يشتغل -->
-    <div class="icons"></div>
   </div>
 
-  <div class="content">
-    <section class="panel" id="quotesPanel">
-      <div class="page-header" style="margin-bottom:14px">
-        <h2>Quotes</h2>
-      </div>
-      <div class="quotes-list" id="quotesList"></div>
-    </section>
+  <!-- This makes nav.js work perfectly -->
+  <div class="icons"></div>
+</div>
+
+<div class="content">
+  <div class="panel">
+    <div class="page-header">
+      <h2>Quotes</h2>
+    </div>
+    <div class="quotes-list" id="quotesList"></div>
   </div>
 </div>
 
@@ -101,7 +113,6 @@
   const STORAGE_KEY = 'myLibraryQuotes';
   let quotes = [];
 
-  // البيانات الـ 10 اقتباسات المضحكة الجديدة (هتظهر دايمًا لو مفيش بيانات محفوظة)
   const defaultQuotes = [
     {id: 1, quote:"The rich do not work for money. They make money work for them.", quoter:"Author Robert Kiyosaki", author:"Robert Kiyosaki", favorite:false},
     {id: 2, quote:"Tourists while radicals do not divide as women.", quoter:"Author Guests", author:"Jane Austen", favorite:false},
@@ -117,60 +128,56 @@
 
   function loadQuotes() {
     try {
-      const data = localStorage.getItem(STORAGE_KEY);
-      if (data) {
-        const parsed = JSON.parse(data);
-        return parsed.map((q, i) => ({ ...q, favorite: !!q.favorite, _order: q._order ?? i }));
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        return JSON.parse(saved).map((q, i) => ({...q, favorite:!!q.favorite, _order:q._order??i}));
       }
-      // لو مفيش بيانات → نستخدم الـ 10 الجديدة
-      return defaultQuotes.map((q, i) => ({ ...q, _order: i }));
-    } catch (e) {
-      console.error("Error loading quotes", e);
-      return defaultQuotes.map((q, i) => ({ ...q, _order: i }));
-    }
+    } catch(e) { console.error(e); }
+    return defaultQuotes.map((q,i)=>({...q, _order:i}));
   }
 
   function saveQuotes() {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(quotes.map(q => {
-      const { _order, ...rest } = q; return rest; // ما نحفظش _order
-    })));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(quotes.map(({_order,...q})=>q)));
   }
 
   function escapeHtml(text) {
-    return String(text).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"})[c]);
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
   }
 
   function toggleFavorite(id) {
     const q = quotes.find(x => x.id === id);
-    if (q) q.favorite = !q.favorite;
-    saveQuotes();
-    refreshDisplay();
+    if (q) {
+      q.favorite = !q.favorite;
+      saveQuotes();
+      renderQuotes();
+    }
   }
   window.toggleFavorite = toggleFavorite;
 
-  function renderQuotesList(filter = '') {
-    const list = document.getElementById('quotesList');
-    list.innerHTML = '';
+  function renderQuotes(filter = '') {
+    const container = document.getElementById('quotesList');
+    container.innerHTML = '';
 
-    let filtered = quotes;
+    let list = quotes;
     if (filter) {
       const term = filter.toLowerCase();
-      filtered = quotes.filter(q => 
+      list = quotes.filter(q => 
         q.quote.toLowerCase().includes(term) || 
         q.author.toLowerCase().includes(term) || 
         q.quoter.toLowerCase().includes(term)
       );
     }
 
-    // ترتيب: المفضلة الأولى
-    filtered.sort((a,b) => (b.favorite - a.favorite) || (a._order - b._order));
+    list.sort((a,b) => (b.favorite - a.favorite) || (a._order - b._order));
 
-    if (filtered.length === 0) {
-      list.innerHTML = '<div class="empty-state">No quotes found.</div>';
+    if (list.length === 0) {
+      container.innerHTML = '<div class="empty-state">No quotes found.</div>';
       return;
     }
 
-    filtered.forEach(q => {
+    list.forEach(q => {
       const card = document.createElement('div');
       card.className = 'quote-card';
       card.innerHTML = `
@@ -178,32 +185,26 @@
           <p>“${escapeHtml(q.quote)}”</p>
           <div class="meta">Quoter: ${escapeHtml(q.quoter)} | Author: <strong>${escapeHtml(q.author)}</strong></div>
         </div>
-        <button class="heart-btn ${q.favorite ? 'favorited' : ''}" 
-                onclick="toggleFavorite(${q.id})" 
-                title="${q.favorite ? 'Remove from favorites' : 'Add to favorites'}">
+        <button class="heart-btn ${q.favorite?'favorited':''}" 
+                onclick="toggleFavorite(${q.id})"
+                title="${q.favorite?'Remove from favorites':'Add to favorites'}">
           ${q.favorite ? '♥' : '♡'}
         </button>
       `;
-      list.appendChild(card);
+      container.appendChild(card);
     });
   }
 
-  function refreshDisplay() {
-    renderQuotesList(globalSearch.value);
-  }
-
-  // بدء التشغيل
+  // Start
   quotes = loadQuotes();
-  refreshDisplay();
-
-  globalSearch.addEventListener('input', refreshDisplay);
+  renderQuotes();
+  document.getElementById('globalSearch').addEventListener('input', e => renderQuotes(e.target.value));
 </script>
 
-<!-- أهم حاجة: nav.js يشتغل دلوقتي بسبب وجود .icons -->
 <script src="nav.js"></script>
-
 </body>
 </html>
+
 
 
 
