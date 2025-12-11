@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Manage Authors</title>
+  <link rel="stylesheet" href="stylem.css" />
+  <script src="scriptm.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <div class="navbar">
+    <div class="nav-left">
+      <div class="logo">
+        <div> </div>
+        <div></div>
+        <div></div>
+      </div>
+     
+        
+        <input type="text" class="search-input" placeholder="🔍︎  Search">
+      
+    </div>
+    <div class="nav-right">
+      <button class="icon-button">🕭</button>
+      <div class="user-avatar">
+       👨🏻‍💼 </div>
+        <span class="dropdown-arrow">⌄</span>
+     
+    </div>
+  </div>
+    <div class="header">
+      <h2>Manage Authors</h2>
+      <button class="btn-add" id="add-author-btn">Add New Author</button>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Nationality</th>
+          <th>Books Count</th>
+          <th>Author Since</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="authors-table-body">
+        <!-- Table rows will be populated by JavaScript -->
+      </tbody>
+    </table>
+
+    <!-- Author Profile Page (initially hidden) -->
+    <div id="author-profile" style="display: none;">
+      <h2>Author Profile</h2>
+      <div style="display: flex; gap: 20px; align-items: flex-start; margin-bottom: 20px;">
+          <img id="profile-photo" src="" alt="Author Photo" style="width: 150px; height: 150px; border-radius: 8px; object-fit: cover;">
+          <div style="flex: 1;">
+              <h3 id="profile-name"></h3>
+              <p id="profile-bio"></p>
+          </div>
+      </div>
+      <h3>Books available</h3>
+      <div id="books-container" style="display: flex; flex-wrap: wrap; gap: 15px; margin-top: 10px;">
+          <!-- Books will be added here dynamically -->
+      </div>
+      <button onclick="goBackToAuthors()" style="margin-top: 20px;" class="btn-add">Back to Authors</button>
+    </div>
+  </div>
+</body>
+</html>

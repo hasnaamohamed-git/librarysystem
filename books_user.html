@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book Store</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar">
+    <div class="logo">📚</div>
+    <input type="text" placeholder="Search..." class="search" id="searchInput">
+    <ul class="nav-links">
+        <a href="index.html" id="navHome" class="active">Home</a>
+        <a href="profile.html" id="MyProfile" class="active">MyProfile</a>
+    </ul>
+    <div class="cart">🛒</div>
+</nav>
+
+<!-- ===== MAIN ===== -->
+<div class="container">
+
+  <div class="main-content">
+    <h2>Recommended for You</h2>
+    <div class="books-row" id="recommended"></div>
+
+    <h2>New Arrivals</h2>
+    <div class="books-row" id="newArrivals"></div>
+
+    <h2>All Books</h2>
+    <div class="books-grid" id="allBooks"></div>
+    </div>
+
+    <!-- Side Box -->
+    <div class="side-box">
+        <h3>My Reserved Books</h3>
+        <p>Summary <span>2</span></p>
+        <p>Submitting <span>3</span></p>
+        <p>Recommend <span>4</span></p>
+        <button>Now Publishing</button>
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
+<!-- ===== BOOK DETAILS POPUP ===== -->
+<div class="popup-overlay" id="popup">
+  <div class="popup-content">
+    <span class="close-btn" onclick="closePopup()">✖</span>
+
+    <div class="popup-left">
+      <img id="popupImage">
+      <div class="stars" id="popupStars"></div>
+      <p><b>Seen Ratings</b></p>
+    </div>
+
+    <div class="popup-right">
+      <h2 id="popupTitle"></h2>
+      <p id="popupDesc"></p>
+      <p><b>Author:</b> <span id="popupAuthor"></span></p>
+      <p><b>Available Copies:</b> <span id="popupAvailable"></span></p>
+
+      <button class="popup-btn">Borrow</button>
+      <button class="popup-btn">Review</button>
+    </div>
+  </div>
+</div>

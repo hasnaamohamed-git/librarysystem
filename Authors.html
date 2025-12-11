@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authors</title>
+    <style>
+        :root {
+            --primary-color: #1a365d;
+            --accent-color: #e67e22;
+            --light-color: #f9f5eb;
+            --dark-color: #333;
+            --border-color: #ddd;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f0e6d2;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            background-color: var(--light-color);
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+        
+        .header {
+            background-color: var(--primary-color);
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            width: 100%;
+        }
+        
+        .logo-icon {
+            width: 24px;
+            height: 24px;
+            background-color: var(--accent-color);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background-color: white;
+            border-radius: 8px;
+            padding: 6px 10px;
+            width: 250px;
+            margin-left: 20px;
+            margin-right: auto;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .search-bar input {
+            border: none;
+            outline: none;
+            flex: 1;
+            padding: 5px;
+            font-size: 14px;
+            background: transparent;
+            color: #333;
+        }
+        
+        .search-icon {
+            color: #777;
+            margin-right: 8px;
+            font-size: 16px;
+        }
+        
+        .user-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-left: auto;
+        }
+        
+        .notification-icon {
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        
+        .user-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .dropdown-arrow {
+            display: none;
+        }
+        
+        .main-content {
+            padding: 20px;
+        }
+        
+        .page-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--dark-color);
+            margin-bottom: 10px;
+        }
+        
+        .page-subtitle {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .add-button {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+        
+        .add-button:hover {
+            background-color: #d35400;
+        }
+        
+        .authors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .author-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+        }
+        
+        .author-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .author-photo {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+        
+        .author-info {
+            flex: 1;
+        }
+        
+        .author-name {
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--dark-color);
+            margin-bottom: 5px;
+        }
+        
+        .author-bio {
+            font-size: 13px;
+            color: #555;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        /* Author Profile Page */
+        #author-profile {
+            display: none;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            margin: 20px;
+        }
+
+        #author-profile-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+            background-color: #f5f0e1;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        #profile-photo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        #profile-name {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--dark-color);
+        }
+
+        #profile-birthdate {
+            color: #777;
+            font-size: 14px;
+        }
+
+        .favorite-btn {
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-left: auto;
+            transition: background-color 0.2s;
+        }
+
+        .favorite-btn:hover {
+            filter: brightness(1.1);
+        }
+
+        .biography-section {
+            margin-bottom: 20px;
+        }
+
+        .biography-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--dark-color);
+            margin-bottom: 10px;
+        }
+
+        .biography-text {
+            color: #555;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .books-section {
+            margin-top: 30px;
+        }
+
+        .books-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--dark-color);
+            margin-bottom: 15px;
+        }
+
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
+        }
+
+        .book-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            text-align: center;
+            position: relative;
+            transition: transform 0.2s;
+        }
+
+        .book-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .book-cover {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .book-rating {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 12px;
+            padding: 2px 6px;
+            font-size: 12px;
+            color: var(--accent-color);
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .book-title {
+            font-size: 12px;
+            font-weight: bold;
+            color: var(--dark-color);
+            margin-bottom: 5px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .book-category {
+            font-size: 11px;
+            color: #777;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-wrap: wrap;
+                gap: 10px;
+                padding: 12px;
+            }
+            
+            .search-bar {
+                width: 100%;
+                margin: 0;
+                order: 2;
+                margin-left: 0;
+            }
+            
+            .logo-icon {
+                order: 1;
+            }
+            
+            .user-controls {
+                order: 3;
+                margin-left: auto;
+            }
+            
+            .page-title {
+                font-size: 20px;
+            }
+            
+            .authors-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            .author-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .author-photo {
+                width: 80px;
+                height: 80px;
+            }
+            
+            #author-profile-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            #profile-photo {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .books-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+            
+            .book-cover {
+                height: 180px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo-icon">A</div>
+            <div class="search-bar">
+                <span class="search-icon">🔍</span>
+                <input type="text" placeholder="Search authors...">
+            </div>
+            <div class="user-controls">
+                <div class="notification-icon">🔔</div>
+                <div class="user-avatar">👤</div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <h1 class="page-title">Authors</h1>
+            <p class="page-subtitle">Discover the minds behind your favorite books</p>
+            
+            <!-- Authors Grid -->
+            <div id="authors-grid" class="authors-grid">
+                <!-- Will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Author Profile Page (Outside main-content to avoid being hidden) -->
+        <div id="author-profile" style="display: none;">
+            <div id="author-profile-header">
+                <img id="profile-photo" src="" alt="Author Photo">
+                <div>
+                    <h2 id="profile-name"></h2>
+                    <p id="profile-birthdate"></p>
+                </div>
+                <button class="favorite-btn">🤍 Favorited</button>
+            </div>
+            
+            <div class="biography-section">
+                <h3 class="biography-title">Biography</h3>
+                <p id="profile-bio" class="biography-text"></p>
+            </div>
+            
+            <div class="books-section">
+                <h3 class="books-title">Books by this Author</h3>
+                <div id="books-grid" class="books-grid">
+                    <!-- Books will be added here dynamically -->
+                </div>
+            </div>
+            
+            <button onclick="goBackToAuthors()" style="margin-top: 20px; background-color: var(--accent-color); color: white; border: none; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-weight: bold;">Back to Authors</button>
+        </div>
+    </div>
+
+    <script>
+        // Data for authors
+        const authors = [
+            { id: 1, name: "Robert Kiyosaki", biography: "American businessman and author of Rich Dad Poor Dad, a book on financial literacy and investing.", birthDate: "1947-04-08", photo: "https://th.bing.com/th/id/R.9d5bd50fb9acc76597a455b6cb122f6f?rik=B2Yo6SNPmAMikg&riu=http%3a%2f%2fnetworktambayan.weebly.com%2fuploads%2f1%2f2%2f9%2f0%2f12903731%2f238086710.jpg&ehk=pMpegMraaWimG6TFp4IKb3SaxxC3zrgNvqtMLc3%2fZq8%3d&risl=&pid=ImgRaw&r=0" },
+            { id: 2, name: "Ihsan Abdel Quddous", biography: "إحسان عبد القدوس - Egyptian writer and novelist known for his romantic and social novels.", birthDate: "1919-01-01", photo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsIg9MxGK2d0TbMS0DVzBLdwrsXd1u-BgPAI-szK6Mv-VYOLt3iIiuoE1ghIuPEzqyhFHnce7Pmwihgq7jKtTcuespxLFnguY2UuyrjvVu&s=10" },
+            { id: 3, name: "Naguib Mahfouz", biography: "نجيب محفوظ - Egyptian Nobel Prize-winning author, known for Cairo Trilogy.", birthDate: "1911-12-11", photo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRptZHpWgN_d9LDxsRJn97AB2WrQbUvlp9yNHK-UPmM0fFJTCa4no6sVGuwU8Li9VXUPOF68serQBwxdrq_ZyOskWBZCf9qpxwSPalLQX8tgg&s=10" },
+            { id: 4, name: "Taha Hussein", biography: "طه حسين - Egyptian writer and intellectual, Dean of Arabic Literature.", birthDate: "1889-11-15", photo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1LVqF_iyUOha13nU60DGd9hVhOd1wcDNPxH6cmNYY2EOMpVcC9Txiy0lXykwp-ybsv6pOur5rivYq8nohS9wIicyLx_PiiMvscss6eh0n&s=10" },
+            { id: 5, name: "George Orwell", biography: "British novelist and essayist, known for 1984 and Animal Farm.", birthDate: "1903-06-25", photo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDff7rjfTY5XEJ7RC3_g5Dh8EOULqwyI5MiGA9XVF3OVage9BrGKBPf-WtOyH2Mvz8vp1O9vFrvhl09WfhjsKFvhDltjdp8wcMFROQo8cv&s=10" },
+            { id: 6, name: "Paulo Coelho", biography: "Brazilian lyricist and novelist, author of The Alchemist.", birthDate: "1947-08-24", photo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSq9OVzRqVFJZf84VyEDppWBUjK-ThYCFrGuLGGI3b-s27cuS9MSIAlKYMKMvTAZL0mJVB3CIJ-gjLt_nulCpJgbkSMorgpEGLj08ZLs3qX&s=10" },
+            { id: 7, name: "Dale Carnegie", biography: "American writer and lecturer on self-improvement and interpersonal skills.", birthDate: "1888-11-24", photo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdrpBVx8WSqPcpjTf2HVXK3fq7bHyx46QGQspUSbGRh1x7inGJ3eb2hqb-osMRxFHwF9W8XY3zDSShVj5u8ljdIrpS9nFl0qzULiFb5P9oSw&s=10" },
+            { id: 8, name: "Alaa Al Aswany", biography: "علاء الأسواني - Egyptian writer and novelist, author of The Yacoubian Building.", birthDate: "1957-05-26", photo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR81TExhFxiC9BXIbhC3VsXYX1YwsVw-qGdvH_EBnpBhTqaLo1psdpWf_bfvy5euQ4uUIiJe2SIV1xDM9H95tHVVdBuytBo4sOvKSrLzomEPw&s=10" },
+            { id: 9, name: "Amr Abdelhamid", biography: "عمرو عبد الحميد - Egyptian ENT surgeon and acclaimed novelist, best known for his fantastical dystopian series like Zykola, which weave adventure with sharp socio-political commentary.", birthDate: "in 1987", photo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSd6qB0XLx4NkyPSlc4WstUihF1ZonOxHl6nDL-zpg5xbIJXI4RUbeUUze_MP0iY_ppFOwSBgm0VMMa10RpMzbBvisWzKErOMZdYHlWVA&s=10" },
+            { id: 10, name: "Emad Rashad", biography:"عماد رشاد عثمان -He holds a Bachelor of Medicine and a Bachelor's degree in Arabic Language and Islamic Culture, and is a Master's student in Neurology and Psychiatry at Alexandria University.", birthDate: "in 1986", photo: "https://bucket.app.kiet.com/assets/post/1k3cwrh5jk_1jhggnmybp/post-4c1e7d51-7278-435d-adf8-06b97631dd45.png" }
+        ];
+
+        // Data for books with ratings
+        const books = [
+            { id: 1, title: "Rich Dad Poor Dad", author_id: 1, category: "Business & Finance", description: "A personal finance book that advocates financial independence through investing, real estate, owning businesses, and building wealth.", cover_image: "https://m.media-amazon.com/images/I/81bsw6fnUiL.jpg", publication_date: "1997-04-01", total_copies: 5, available_copies: 3, price_per_day: 8.00, rating: 4.8 },
+            { id: 2, title: "The Intelligent Investor", author_id: 1, category: "Business & Finance", description: "Benjamin Graham's classic guide to value investing and financial wisdom.", cover_image: "https://m.media-amazon.com/images/I/71vllLbpsdL.UF1000,1000_QL80.jpg", publication_date: "1949-01-01", total_copies: 3, available_copies: 2, price_per_day: 7.00, rating: 4.7 },
+            { id: 3, title: "Think and Grow Rich", author_id: 7, category: "Business & Finance", description: "Napoleon Hill's timeless classic on success and personal achievement.", cover_image: "https://m.media-amazon.com/images/I/61IxJuRI39L.AC_UF1000,1000_QL80.jpg", publication_date: "1937-01-01", total_copies: 4, available_copies: 4, price_per_day: 6.00, rating: 4.6 },
+            { id: 4, title: "The 4-Hour Work Week", author_id: 1, category: "Business & Finance", description: "Timothy Ferriss guide to lifestyle design and escaping the 9-5 grind.", cover_image: "https://m.media-amazon.com/images/I/71vO9Tbf4-L.AC_UF1000,1000_QL80.jpg", publication_date: "2007-04-24", total_copies: 3, available_copies: 1, price_per_day: 7.50, rating: 4.5 },
+            { id: 5, title: "Zero to One", author_id: 1, category: "Business & Finance", description: "Peter Thiel guide to building innovative startups and thinking differently.", cover_image: "https://m.media-amazon.com/images/I/51zGCdRQXOL.AC_UF1000,1000_QL80.jpg", publication_date: "2014-09-16", total_copies: 4, available_copies: 3, price_per_day: 8.00, rating: 4.9 },
+            { id: 6, title: "أبي الذي أكره", author_id: 10, category: "Arabic Literature", description: "رواية عن العلاقات الأسرية المعقدة والصراع بين الأجيال", cover_image: "https://www.tirryaq.com/wp-content/uploads/2022/04/%D8%A3%D8%A8%D9%8A-%D8%A7%D9%84%D8%B0%D9%8A%D8%A3%D9%83%D8%B1%D9%87.jpg", publication_date: "1960-01-01", total_copies: 4, available_copies: 2, price_per_day: 6.00, rating: 4.4 },
+            { id: 7, title: "الثلاثية - Cairo Trilogy", author_id: 3, category: "Arabic Literature", description: "ثلاثية نجيب محفوظ الشهيرة: بين القصرين، قصر الشوق، السكرية", cover_image: "https://i.ebayimg.com/images/g/f8AAAOSwpDdVUNHH/s-l400.jpg", publication_date: "1956-01-01", total_copies: 5, available_copies: 4, price_per_day: 7.00, rating: 4.9 },
+            { id: 8, title: "الأيام - The Days", author_id: 4, category: "Arabic Literature", description: "السيرة الذاتية لطه حسين في ثلاثة أجزاء", cover_image: "https://asfar.io/product/the-days-taha-hussein-youssef-nawfal/the-days-taha-hussein-youssef-nawfal.jpg", publication_date: "1929-01-01", total_copies: 3, available_copies: 3, price_per_day: 5.50, rating: 4.7 },
+            { id: 9, title: "عمارة يعقوبيان", author_id: 8, category: "Arabic Literature", description: "رواية تصور المجتمع المصري من خلال سكان عمارة واحدة", cover_image: "https://www.neelwafurat.com/images/lb/abookstore/covers/normal/324/324381.jpg", publication_date: "2002-01-01", total_copies: 4, available_copies: 2, price_per_day: 6.50, rating: 4.6 },
+            { id: 10, title: "The Alchemist", author_id: 6, category: "Fantasy & Adventure", description: "A philosophical story about following your dreams and finding your personal legend.", cover_image: "https://tse1.mm.bing.net/th/id/OIP.8jO5wOWAtlNC-aQJWKKlPAHaHa?cb=ucfimg2&ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3", publication_date: "1988-01-01", total_copies: 5, available_copies: 4, price_per_day: 6.50, rating: 4.7 },
+            { id: 11, title: "How to Win Friends and Influence People", author_id: 7, category: "Self-Development", description: "Dale Carnegies timeless guide to building relationships and influencing others.", cover_image: "https://tse3.mm.bing.net/th/id/OIP.qNo41BIBgbh5GRMnsUs32AHaLb?cb=ucfimg2&ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3", publication_date: "1936-10-01", total_copies: 5, available_copies: 4, price_per_day: 6.00, rating: 4.9 },
+            { id: 12, title: "The 7 Habits of Highly Effective People", author_id: 7, category: "Self-Development", description: "Stephen Coveys principle-centered approach to solving personal and professional problems.", cover_image: "https://tse4.mm.bing.net/th/id/OIP.8_SeZIaVtv6pZgfwe_JSfQHaHa?cb=ucfimg2&ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3", publication_date: "1989-08-15", total_copies: 4, available_copies: 3, price_per_day: 6.50, rating: 4.8 },
+            { id: 13, title: "Atomic Habits", author_id: 7, category: "Self-Development", description: "James Clears guide to building good habits and breaking bad ones.", cover_image: "https://jamesclear.com/wp-content/uploads/2019/04/atomicHC-flat-1-e1556572683325.jpg", publication_date: "2018-10-16", total_copies: 6, available_copies: 5, price_per_day: 7.00, rating: 4.9 },
+            { id: 14, title: "The Power of Now", author_id: 6, category: "Self-Development", description: "Eckhart Tolles guide to spiritual enlightenment and living in the present.", cover_image: "https://tse3.mm.bing.net/th/id/OIP.7Q5PqgnL1bVp0Q42hSBSEQHaLJ?cb=ucfimg2&ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3", publication_date: "1997-01-01", total_copies: 4, available_copies: 2, price_per_day: 6.00, rating: 4.7 },
+            { id: 15, title: "Mans Search for Meaning", author_id: 7, category: "Self-Development", description: "Viktor Frankls profound exploration of finding purpose through suffering.", cover_image: "https://tse4.mm.bing.net/th/id/OIP.F1PjeVnTf4_e1oo0HQkq3AHaLH?cb=ucfimg2&ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3", publication_date: "1946-01-01", total_copies: 3, available_copies: 2, price_per_day: 5.50, rating: 4.9 },
+            { id: 16, title: "1984", author_id: 5, category: "Dystopian", description: "A future government controls thought and speech through surveillance and punishes individuality.", cover_image: "https://cdn.abjjad.com/pub/0e90beaa-507e-4642-9b0a-01208d63ce64-192X290.png", publication_date: "1949-06-08", total_copies: 3, available_copies: 2, price_per_day: 5.50, rating: 4.4 },
+            { id: 17, title: "فتاة الياقة الزرقاء", author_id: 9, category: "Fantasy", description: "A dystopian sci-fi novel set in a far future where a pandemic has devastated female fertility, focusing on a rare class of reproductive women (marked by blue collars) who are systematically exploited by an oppressive regime to ensure humanity's survival.", cover_image: "https://cdn.abjjad.com/pub/e0367c56-8df6-461a-b30a-40b920365c82.png", publication_date: "2021-01-01", total_copies: 3, available_copies: 2, price_per_day: 5.40, rating: 4 },
+            { id: 18, title: "أرض زيكولا", author_id: 9, category: "Fantasy", description: "(Land of Zykola) is a gripping fantasy novel set on a divided continent, where the encounter between a soldier and a mysterious girl from a forbidden forest unravels a thrilling tale of secrets, power, and rebellion against oppression.", cover_image: "https://upload.wikimedia.org/wikipedia/ar/9/98/%D8%A3%D8%B1%D8%B6_%D8%B2%D9%8A%D9%83%D9%88%D9%84%D8%A7.jpg", publication_date: "2010-10-01", total_copies: 3, available_copies: 2, price_per_day: 5.60, rating: 4.5 },
+            { id: 19, title: "أسف لم أعد أستطيع", author_id: 2, category: "Novel and short story literature", description: "A collection of eight long stories that address complex social and personal issues.", cover_image: "https://cdn.abjjad.com/pub/155e40af-a3d5-483f-bc5e-e995f1d10236.png", publication_date: "2000-01-01", total_copies: 3, available_copies: 2, price_per_day: 5.00, rating: 3 },
+            { id: 20, title: "أولاد حارتنا", author_id: 3, category: "Novel and short story literature", description: "A profoundly symbolic novel depicting humanity's struggle against injustice and the search for salvation, through the story of successive generations in an Egyptian alleyway.", cover_image: "https://ugarit-buchladen.com/wp-content/uploads/2021/06/%D8%AD%D8%A7%D8%B1%D8%AA%D9%86%D8%A712.jpg", publication_date: "1950-09-21", total_copies: 3, available_copies: 2, price_per_day: 5.00, rating: 4.5 },
+            { id: 21, title: "ممتلئ بالفراغ", author_id: 10, category: "Self-Help & Psychology", description: "A profound philosophical and psychological book that addresses addictions and compulsive behaviors (such as food, shopping, relationship, and technology addictions) as symptoms of an (existential void) resulting from childhood traumas or deep psychological wounds, and offers a journey to recovery from these behaviors through emotional and scientific language.", cover_image: "https://cdn.abjjad.com/pub/8e9c25f5-532b-4731-aae0-d584b6f283e1.png", publication_date: "2025-01-01", total_copies: 3, available_copies: 2, price_per_day: 5.00, rating: 4.6 },
+            { id: 22, title: "المُعذَّبون في الأرض", author_id: 4, category: "Arabic Literature", description: "A moving collection of realistic short stories reflecting the suffering of the poor and marginalized classes in Egypt during the 1940s, and revealing poverty, injustice, and classism.", cover_image: "https://downloads.hindawi.org/covers/304x406/59136080.jpg", publication_date: "in 1949", total_copies: 3, available_copies: 3, price_per_day: 5.50, rating: 4.7 }
+        ];
+
+        function populateAuthorsGrid() {
+            const authorsGrid = document.getElementById('authors-grid');
+            authorsGrid.innerHTML = '';
+
+            authors.forEach(author => {
+                const card = document.createElement('div');
+                card.className = 'author-card';
+                card.onclick = () => showAuthorProfile(author.id);
+
+                card.innerHTML = `
+                    <img class="author-photo" src="${author.photo}" alt="${author.name}">
+                    <div class="author-info">
+                        <div class="author-name">${author.name}</div>
+                        <div class="author-bio">${author.biography}</div>
+                    </div>
+                `;
+                authorsGrid.appendChild(card);
+            });
+        }
+
+        function showAuthorProfile(id) {
+            const author = authors.find(a => a.id === id);
+            if (!author) return;
+
+            document.querySelector('.main-content').style.display = 'none';
+            document.getElementById('author-profile').style.display = 'block';
+
+            document.getElementById('profile-photo').src = author.photo;
+            document.getElementById('profile-name').textContent = author.name;
+            document.getElementById('profile-birthdate').textContent = `Born ${author.birthDate}`;
+            document.getElementById('profile-bio').textContent = author.biography;
+
+            const booksGrid = document.getElementById('books-grid');
+            booksGrid.innerHTML = '';
+
+            const authorBooks = books.filter(book => book.author_id === id);
+
+            authorBooks.forEach(book => {
+                const bookCard = document.createElement('div');
+                bookCard.className = 'book-card';
+
+                // ✅ بدون زر "View Details"
+                bookCard.innerHTML = `
+                    <div class="book-cover">
+                        <img src="${book.cover_image}" alt="${book.title}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+                        <div class="book-rating">⭐ ${book.rating}</div>
+                    </div>
+                    <div class="book-title">${book.title}</div>
+                    <div class="book-category">${book.category}</div>
+                `;
+                booksGrid.appendChild(bookCard);
+            });
+
+            // === زر المفضلة ===
+            const favoriteBtn = document.querySelector('.favorite-btn');
+            const favorites = JSON.parse(localStorage.getItem('favoriteAuthors') || '[]');
+            const isFavorite = favorites.includes(id);
+
+            if (isFavorite) {
+                favoriteBtn.innerHTML = '❤️ Favorited';
+                favoriteBtn.style.backgroundColor = '#e74c3c';
+            } else {
+                favoriteBtn.innerHTML = '🤍 Favorited';
+                favoriteBtn.style.backgroundColor = '#95a5a6';
+            }
+
+            favoriteBtn.onclick = () => {
+                const updatedFavorites = JSON.parse(localStorage.getItem('favoriteAuthors') || '[]');
+                const index = updatedFavorites.indexOf(id);
+                
+                if (index === -1) {
+                    updatedFavorites.push(id);
+                    favoriteBtn.innerHTML = '❤️ Favorited';
+                    favoriteBtn.style.backgroundColor = '#e74c3c';
+                } else {
+                    updatedFavorites.splice(index, 1);
+                    favoriteBtn.innerHTML = '🤍 Favorited';
+                    favoriteBtn.style.backgroundColor = '#95a5a6';
+                }
+                
+                localStorage.setItem('favoriteAuthors', JSON.stringify(updatedFavorites));
+            };
+        }
+
+        function goBackToAuthors() {
+            document.querySelector('.main-content').style.display = 'block';
+            document.getElementById('author-profile').style.display = 'none';
+        }
+
+        document.addEventListener('DOMContentLoaded', populateAuthorsGrid);
+
+        document.querySelector('.search-bar input').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase().trim();
+            
+            if (searchTerm === '') {
+                populateAuthorsGrid();
+                return;
+            }
+            
+            const filteredAuthors = authors.filter(author => 
+                author.name.toLowerCase().includes(searchTerm) || 
+                author.biography.toLowerCase().includes(searchTerm)
+            );
+            
+            const authorsGrid = document.getElementById('authors-grid');
+            authorsGrid.innerHTML = '';
+            
+            if (filteredAuthors.length === 0) {
+                authorsGrid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 20px; color: #666;">
+                        No authors found matching "${searchTerm}"
+                    </div>
+                `;
+                return;
+            }
+            
+            filteredAuthors.forEach(author => {
+                const card = document.createElement('div');
+                card.className = 'author-card';
+                card.onclick = () => showAuthorProfile(author.id);
+
+                card.innerHTML = `
+                    <img class="author-photo" src="${author.photo}" alt="${author.name}">
+                    <div class="author-info">
+                        <div class="author-name">${author.name}</div>
+                        <div class="author-bio">${author.biography}</div>
+                    </div>
+                `;
+                authorsGrid.appendChild(card);
+            });
+        });
+        
+    </script>
+</body>
+</html>
