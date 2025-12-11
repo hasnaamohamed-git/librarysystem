@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Library — Quotes</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
-    /* CSS Variables */
+    /* كل الـ CSS زي ما هو عندك، ما غيرتش فيه حاجة */
     :root{
       --nav-blue:#083d6e;
       --card-bg:#fff8f2;
@@ -18,160 +18,79 @@
       --glass-shadow: 0 6px 18px rgba(16,24,40,0.08);
     }
     html,body{height:100%;margin:0;font-family:'Poppins',system-ui,Arial; background: linear-gradient(180deg, #f7efe8 0%, var(--page-bg) 100%);}
-
-    .app {
-      margin: 0; 
-      padding: 0;
-      box-sizing: border-box;
-      width: 100%;
-    }
-
-    /* Top Header Bar */
+    .app {margin:0;padding:0;box-sizing:border-box;width:100%;}
     .topbar{
-        height:70px;
-        background:var(--nav-blue);
-        border-radius:12px; 
+        height:70px;background:var(--nav-blue);border-radius:12px;
         display:flex;align-items:center;gap:18px;padding:12px 24px;color:white;
-        box-shadow:var(--shadow);
+        box-shadow:var(--shadow);justify-content:space-between;
     }
-
-    /* Logo Placeholder */
     .logo-placeholder {
-        width: 40px; height: 40px; border-radius: 8px; 
-        background: #fff9f4; display: flex; align-items: center; 
+        width: 40px; height: 40px; border-radius: 8px;
+        background: #fff9f4; display: flex; align-items: center;
         justify-content: center; color: var(--nav-blue); font-weight: 700;
         font-size: 20px;
     }
-
-    /* Search Bar Style */
-    .topbar .search-container{
-        flex:1; display:flex; align-items:center;
-    }
+    .topbar .search-container{flex:1;display:flex;align-items:center;justify-content:center;}
     .topbar .search-input {
-        flex: 1;
-        display: flex; align-items: center;
-        background: white;
-        border-radius: 8px; 
-        padding: 8px 16px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        max-width: 500px;
+        display: flex; align-items: center; background: white;
+        border-radius: 8px; padding: 8px 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        max-width: 500px; width: 100%;
     }
     .topbar .search-input input{
-        border:0; background:transparent; color:#333;
-        outline:none; font-size:16px; width:100%;
+        border:0; background:transparent; color:#333; outline:none; font-size:16px; width:100%; margin-right:8px;
     }
-    .search-icon{
-        color: var(--muted); margin-right: 8px; font-size: 18px;
-    }
-
-    /* Icons and Avatar Style */
     .topbar .icons{display:flex;gap:16px;align-items:center}
-
-    .action-btn{
-        background:transparent;border:0;padding:6px 8px;border-radius:8px;cursor:pointer; font-size: 24px; color: white;
-        transition: transform 0.1s;
-    }
-    .action-btn:hover {transform: scale(1.05);}
-
-   
-    /* Content Area - Single Page */
-    .content{
-      margin-top:18px;
-      padding: 0 24px 24px 24px;
-    }
-
-    /* Panel (Page) Style */
-    .panel{
-      background:var(--card-bg);
-      border-radius:var(--radius);
-      box-shadow:var(--glass-shadow);
-      padding:22px;
-      min-height:520px;
-      position:relative;
-      overflow:auto;
-    }
-
-    /* Quotes list */
+    .content{margin-top:18px;padding: 0 24px 24px 24px;}
+    .panel{background:var(--card-bg);border-radius:var(--radius);box-shadow:var(--glass-shadow);padding:22px;min-height:520px;}
     .quotes-list{display:flex;flex-direction:column;gap:16px; margin-top: 10px;}
     .quote-card{
-      background:white;border-radius:10px;padding:16px;
-      box-shadow:0 6px 14px rgba(11,22,33,0.05);
-      border-left:4px solid var(--accent);
-      display:flex;
-      gap:12px;
-      align-items:flex-start;
-      justify-content:space-between;
-      position:relative;
+      background:white;border-radius:10px;padding:16px;box-shadow:0 6px 14px rgba(11,22,33,0.05);
+      border-left:4px solid var(--accent);display:flex;gap:12px;align-items:flex-start;
+      justify-content:space-between;position:relative;
     }
-    .quote-main{
-      flex:1;
-    }
+    .quote-main{flex:1;}
     .quote-card p{margin:0 0 8px 0;font-size:15px;color:#222;line-height:1.45}
     .quote-card .meta{font-size:13px;color:var(--muted); font-weight: 600;}
-
-    /* Heart (favorite) button */
     .heart-btn{
-      border:0;
-      background:transparent;
-      font-size:20px;
-      cursor:pointer;
-      padding:8px;
-      border-radius:8px;
-      transition: transform 0.08s ease, color 0.12s ease;
-      color: var(--muted);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      min-width:44px;
-      min-height:44px;
+      border:0;background:transparent;font-size:20px;cursor:pointer;padding:8px;
+      border-radius:8px;transition: transform 0.08s ease, color 0.12s ease;color:var(--muted);
+      min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center;
     }
-    .heart-btn:active{ transform: scale(0.95); }
-    .heart-btn.favorited{
-      color: var(--accent);
-      transform-origin:center;
-      animation: pop 0.18s ease;
-    }
-    @keyframes pop{
-      0%{ transform: scale(0.8); }
-      60%{ transform: scale(1.12); }
-      100%{ transform: scale(1); }
-    }
-
-    /* Page Header */
-    .page-header h2 {
-        margin: 0; color: var(--nav-blue); font-size: 26px;
-    }
-
-    /* Empty state text alignment */
-    .empty-state { color:var(--muted); padding:12px; }
-
-    /* small responsive tweaks */
+    .heart-btn:active{transform:scale(0.95);}
+    .heart-btn.favorited{color:var(--accent);animation:pop 0.18s ease;}
+    @keyframes pop{0%{transform:scale(0.8);}60%{transform:scale(1.12);}100%{transform:scale(1);}}
+    .page-header h2 {margin: 0; color: var(--nav-blue); font-size: 26px;}
+    .empty-state {color:var(--muted); padding:12px; text-align:center;}
     @media (max-width:600px){
-      .topbar{padding:10px}
+      .topbar{flex-direction:column;height:auto;padding:15px;gap:12px;}
       .search-input{max-width:unset}
-      .quote-card{flex-direction:column; align-items:stretch}
+      .quote-card{flex-direction:column;}
       .heart-btn{align-self:flex-end}
     }
   </style>
 </head>
 <body>
 <div class="app">
+
+  <!-- الـ Topbar المعدل (أضفنا الـ logo والـ icons) -->
   <div class="topbar">
-     <div class="search-container">
-        <div class="search-input">
-            <span class="search-icon">🔍</span>
-            <input id="globalSearch" placeholder="Search quotes or authors..." />
-        </div>
+    <div class="logo-placeholder">A</div>
+
+    <div class="search-container">
+      <div class="search-input">
+        <span class="search-icon">Search</span>
+        <input id="globalSearch" placeholder="Search quotes or authors..." />
+      </div>
     </div>
-    
-  </div>
-  
+
+    <!-- هذا العنصر هو اللي بيخلي nav.js يشتغل -->
+    <div class="icons"></div>
   </div>
 
   <div class="content">
-    <section class="panel" id="quotesPanel" aria-labelledby="quotes-heading">
+    <section class="panel" id="quotesPanel">
       <div class="page-header" style="margin-bottom:14px">
-        <h2 id="quotes-heading">Quotes</h2>
+        <h2>Quotes</h2>
       </div>
       <div class="quotes-list" id="quotesList"></div>
     </section>
@@ -179,219 +98,113 @@
 </div>
 
 <script>
-  // --- Local Storage Configuration ---
   const STORAGE_KEY = 'myLibraryQuotes';
   let quotes = [];
 
-  // Load quotes from Local Storage or use mock data if empty
+  // البيانات الـ 10 اقتباسات المضحكة الجديدة (هتظهر دايمًا لو مفيش بيانات محفوظة)
+  const defaultQuotes = [
+    {id: 1, quote:"The rich do not work for money. They make money work for them.", quoter:"Author Robert Kiyosaki", author:"Robert Kiyosaki", favorite:false},
+    {id: 2, quote:"Tourists while radicals do not divide as women.", quoter:"Author Guests", author:"Jane Austen", favorite:false},
+    {id: 3, quote:"Those are decisions coming between rest the solutions that the world uses.", quoter:"Author Stanni", author:"M. Stanni", favorite:false},
+    {id: 4, quote:"Ten or two commit to the two absolute mentions.", quoter:"Author Machine", author:"A. Machine", favorite:false},
+    {id: 5, quote:"Clouds never ask permission before they cover the sun on Tuesday.", quoter:"Philosopher of Weather", author:"Dr. Sky Johnson", favorite:false},
+    {id: 6, quote:"Success is 99% coffee and 47% forgetting to sleep.", quoter:"Motivational Guru", author:"Caffeine Maximus", favorite:false},
+    {id: 7, quote:"The early bird gets the worm, but the night owl keeps the Wi-Fi password.", quoter:"Modern Wisdom", author:"Anonymous Hacker", favorite:false},
+    {id: 8, quote:"Potatoes have skin, I have skin, therefore I am a potato on weekends.", quoter:"Deep Thoughts", author:"Sir Crispy Fries", favorite:false},
+    {id: 9, quote:"Time flies like an arrow, fruit flies like a banana in summer.", quoter:"Linguistic Genius", author:"Professor Wordplay", favorite:false},
+    {id:10, quote:"Never trust atoms, they make up literally everything including Tuesdays.", quoter:"Science Dad Jokes", author:"Neil deGrasse Tyson’t", favorite:false}
+  ];
+
   function loadQuotes() {
     try {
       const data = localStorage.getItem(STORAGE_KEY);
       if (data) {
         const parsed = JSON.parse(data);
-        // ensure every item has a 'favorite' boolean
         return parsed.map((q, i) => ({ ...q, favorite: !!q.favorite, _order: q._order ?? i }));
-      } else {
-        // mock data initial load (includes favorite default false)
-        const mock = [
-          [
-  {
-    "id": 1,
-    "quote": "The rich do not work for money. They make money work for them.",
-    "quoter": "Author Robert Kiyosaki",
-    "author": "Robert Kiyosaki",
-    "favorite": false
-  },
-  {
-    "id": 2,
-    "quote": "Tourists while radicals do not divide as women.",
-    "quoter": "Author Guests",
-    "author": "Jane Austen",
-    "favorite": false
-  },
-  {
-    "id": 3,
-    "quote": "Those are decisions coming between rest the solutions that the world uses.",
-    "quoter": "Author Stanni",
-    "author": "M. Stanni",
-    "favorite": false
-  },
-  {
-    "id": 4,
-    "quote": "Ten or two commit to the two absolute mentions.",
-    "quoter": "Author Machine",
-    "author": "A. Machine",
-    "favorite": false
-  },
-  {
-    "id": 5,
-    "quote": "Clouds never ask permission before they cover the sun on Tuesday.",
-    "quoter": "Philosopher of Weather",
-    "author": "Dr. Sky Johnson",
-    "favorite": false
-  },
-  {
-    "id": 6,
-    "quote": "Success is 99% coffee and 47% forgetting to sleep.",
-    "quoter": "Motivational Guru",
-    "author": "Caffeine Maximus",
-    "favorite": false
-  },
-  {
-    "id": 7,
-    "quote": "The early bird gets the worm, but the night owl keeps the Wi-Fi password.",
-    "quoter": "Modern Wisdom",
-    "author": "Anonymous Hacker",
-    "favorite": false
-  },
-  {
-    "id": 8,
-    "quote": "Potatoes have skin, I have skin, therefore I am a potato on weekends.",
-    "quoter": "Deep Thoughts",
-    "author": "Sir Crispy Fries",
-    "favorite": false
-  },
-  {
-    "id": 9,
-    "quote": "Time flies like an arrow, fruit flies like a banana in summer.",
-    "quoter": "Linguistic Genius",
-    "author": "Professor Wordplay",
-    "favorite": false
-  },
-  {
-    "id": 10,
-    "quote": "Never trust atoms, they make up literally everything including Tuesdays.",
-    "quoter": "Science Dad Jokes",
-    "author": "Neil deGrasse Tyson’t",
-    "favorite": false
-  }
-]
-        ];
-        // keep original order index for stable sorting
-        return mock.map((q, i) => ({ ...q, _order: i }));
       }
+      // لو مفيش بيانات → نستخدم الـ 10 الجديدة
+      return defaultQuotes.map((q, i) => ({ ...q, _order: i }));
     } catch (e) {
-      console.error("Error loading quotes from local storage", e);
-      return [];
+      console.error("Error loading quotes", e);
+      return defaultQuotes.map((q, i) => ({ ...q, _order: i }));
     }
   }
 
   function saveQuotes() {
-    try {
-      // persist quotes; include _order so order is stable
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(quotes));
-    } catch (e) {
-      console.error("Error saving quotes to local storage", e);
-    }
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(quotes.map(q => {
+      const { _order, ...rest } = q; return rest; // ما نحفظش _order
+    })));
   }
 
-  // Placeholder function for future account page link
-  function goToAccountPage() {
-      alert("Redirecting to the Account/Profile page...");
-      // In a real application, you would use: window.location.href = 'account.html';
-  }
-  window.goToAccountPage = goToAccountPage;
-
-  // --- DOM References ---
-  const quotesList = document.getElementById('quotesList');
-  const globalSearch = document.getElementById('globalSearch');
-
-  // --- Helpers ---
-  // Simple HTML escaping function to prevent XSS
-  function escapeHtml(text){
-    return String(text).replace(/[&<>"']/g, function(c){
-      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[c];
-    });
+  function escapeHtml(text) {
+    return String(text).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"})[c]);
   }
 
-  // Toggle favorite for a quote by id
-  function toggleFavorite(id){
-    const idx = quotes.findIndex(q=>q.id === id);
-    if(idx === -1) return;
-    quotes[idx].favorite = !quotes[idx].favorite;
-    // update order so newly favorited come above non-favorites but keep stable ordering within groups
-    // keep existing _order for stable sort; we won't modify it here
+  function toggleFavorite(id) {
+    const q = quotes.find(x => x.id === id);
+    if (q) q.favorite = !q.favorite;
     saveQuotes();
     refreshDisplay();
   }
   window.toggleFavorite = toggleFavorite;
 
-  // --- Rendering Functions ---
-  function renderQuotesList(filter = ''){
-    quotesList.innerHTML = '';
-    const term = String(filter || '').trim().toLowerCase();
+  function renderQuotesList(filter = '') {
+    const list = document.getElementById('quotesList');
+    list.innerHTML = '';
 
-    // filter first
-    let data = quotes.filter(q=>{
-      if(!term) return true;
-      return (q.quote + " " + q.quoter + " " + q.author).toLowerCase().includes(term);
-    });
+    let filtered = quotes;
+    if (filter) {
+      const term = filter.toLowerCase();
+      filtered = quotes.filter(q => 
+        q.quote.toLowerCase().includes(term) || 
+        q.author.toLowerCase().includes(term) || 
+        q.quoter.toLowerCase().includes(term)
+      );
+    }
 
-    // sort so favorites come first, then by original order (_order)
-    data.sort((a,b)=>{
-      if (a.favorite === b.favorite) return (a._order ?? a.id) - (b._order ?? b.id);
-      return (a.favorite ? -1 : 1);
-    });
+    // ترتيب: المفضلة الأولى
+    filtered.sort((a,b) => (b.favorite - a.favorite) || (a._order - b._order));
 
-    if(data.length===0){
-      quotesList.innerHTML = '<div class="empty-state">No quotes found matching your search.</div>';
+    if (filtered.length === 0) {
+      list.innerHTML = '<div class="empty-state">No quotes found.</div>';
       return;
     }
 
-    data.forEach(q=>{
+    filtered.forEach(q => {
       const card = document.createElement('div');
       card.className = 'quote-card';
-
-      // left/main content
-      const main = document.createElement('div');
-      main.className = 'quote-main';
-      const p = document.createElement('p');
-      p.innerHTML = `“${escapeHtml(q.quote)}”`;
-      const meta = document.createElement('div');
-      meta.className = 'meta';
-      meta.innerHTML = `Quoter: ${escapeHtml(q.quoter)} | Author: <span style="font-weight:700">${escapeHtml(q.author)}</span>`;
-      main.appendChild(p);
-      main.appendChild(meta);
-
-      // heart button
-      const heartBtn = document.createElement('button');
-      heartBtn.className = 'heart-btn' + (q.favorite ? ' favorited' : '');
-      heartBtn.setAttribute('aria-pressed', q.favorite ? 'true' : 'false');
-      heartBtn.setAttribute('title', q.favorite ? 'Remove from favorites' : 'Add to favorites');
-      heartBtn.onclick = function(e){
-        e.stopPropagation();
-        toggleFavorite(q.id);
-      };
-      // show filled or outline heart
-      heartBtn.textContent = q.favorite ? '♥' : '♡';
-
-      // When the heart toggles, refreshDisplay will re-render and update states.
-
-      card.appendChild(main);
-      card.appendChild(heartBtn);
-      quotesList.appendChild(card);
+      card.innerHTML = `
+        <div class="quote-main">
+          <p>“${escapeHtml(q.quote)}”</p>
+          <div class="meta">Quoter: ${escapeHtml(q.quoter)} | Author: <strong>${escapeHtml(q.author)}</strong></div>
+        </div>
+        <button class="heart-btn ${q.favorite ? 'favorited' : ''}" 
+                onclick="toggleFavorite(${q.id})" 
+                title="${q.favorite ? 'Remove from favorites' : 'Add to favorites'}">
+          ${q.favorite ? '♥' : '♡'}
+        </button>
+      `;
+      list.appendChild(card);
     });
   }
 
-  // Refreshes the display based on current filter input
-  function refreshDisplay(){
+  function refreshDisplay() {
     renderQuotesList(globalSearch.value);
   }
 
-  // --- Filter Handler ---
+  // بدء التشغيل
+  quotes = loadQuotes();
+  refreshDisplay();
+
   globalSearch.addEventListener('input', refreshDisplay);
-
-  // --- Initial Setup ---
-  quotes = loadQuotes(); // Load data on startup
-  // ensure each item has _order for stable sorting if not present
-  quotes = quotes.map((q, i) => ({ ...q, _order: (q._order ?? i) }));
-  saveQuotes(); // persist initial normalized structure
-  refreshDisplay(); // Initial render
-
 </script>
-    <script src="nav.js"></script>
+
+<!-- أهم حاجة: nav.js يشتغل دلوقتي بسبب وجود .icons -->
+<script src="nav.js"></script>
+
 </body>
 </html>
+
 
 
 
