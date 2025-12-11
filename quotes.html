@@ -194,10 +194,78 @@
       } else {
         // mock data initial load (includes favorite default false)
         const mock = [
-          {id:1, quote:"The rich do not work for money. They make money work for them.", quoter:"Author Robert Kiyosaki", author:"Robert Kiyosaki", favorite:false},
-          {id:2, quote:"Tourists while radicals do not divide as women.", quoter:"Author Guests", author:"Jane Austen", favorite:false},
-          {id:3, quote:"Those are decisions coming between rest the solutions that the world uses.", quoter:"Author Stanni", author:"M. Stanni", favorite:false},
-          {id:4, quote:"Ten or two commit to the two absolute mentions.", quoter:"Author Machine", author:"A. Machine", favorite:false}
+          [
+  {
+    "id": 1,
+    "quote": "The rich do not work for money. They make money work for them.",
+    "quoter": "Author Robert Kiyosaki",
+    "author": "Robert Kiyosaki",
+    "favorite": false
+  },
+  {
+    "id": 2,
+    "quote": "Tourists while radicals do not divide as women.",
+    "quoter": "Author Guests",
+    "author": "Jane Austen",
+    "favorite": false
+  },
+  {
+    "id": 3,
+    "quote": "Those are decisions coming between rest the solutions that the world uses.",
+    "quoter": "Author Stanni",
+    "author": "M. Stanni",
+    "favorite": false
+  },
+  {
+    "id": 4,
+    "quote": "Ten or two commit to the two absolute mentions.",
+    "quoter": "Author Machine",
+    "author": "A. Machine",
+    "favorite": false
+  },
+  {
+    "id": 5,
+    "quote": "Clouds never ask permission before they cover the sun on Tuesday.",
+    "quoter": "Philosopher of Weather",
+    "author": "Dr. Sky Johnson",
+    "favorite": false
+  },
+  {
+    "id": 6,
+    "quote": "Success is 99% coffee and 47% forgetting to sleep.",
+    "quoter": "Motivational Guru",
+    "author": "Caffeine Maximus",
+    "favorite": false
+  },
+  {
+    "id": 7,
+    "quote": "The early bird gets the worm, but the night owl keeps the Wi-Fi password.",
+    "quoter": "Modern Wisdom",
+    "author": "Anonymous Hacker",
+    "favorite": false
+  },
+  {
+    "id": 8,
+    "quote": "Potatoes have skin, I have skin, therefore I am a potato on weekends.",
+    "quoter": "Deep Thoughts",
+    "author": "Sir Crispy Fries",
+    "favorite": false
+  },
+  {
+    "id": 9,
+    "quote": "Time flies like an arrow, fruit flies like a banana in summer.",
+    "quoter": "Linguistic Genius",
+    "author": "Professor Wordplay",
+    "favorite": false
+  },
+  {
+    "id": 10,
+    "quote": "Never trust atoms, they make up literally everything including Tuesdays.",
+    "quoter": "Science Dad Jokes",
+    "author": "Neil deGrasse Tyson’t",
+    "favorite": false
+  }
+]
         ];
         // keep original order index for stable sorting
         return mock.map((q, i) => ({ ...q, _order: i }));
@@ -324,6 +392,7 @@
     <script src="nav.js"></script>
 </body>
 </html>
+
 
 
 
