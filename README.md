@@ -946,6 +946,8 @@ Users (Admin) (1) ─────< Quotes (N)
        │
        └──────── (N:1) ───────← USERS (admin who added)
 ```
+#ERD
+<img width="3167" height="1608" alt="erd web" src="https://github.com/user-attachments/assets/5ca89639-1780-4c72-9519-036051778f69" />
 
 ## Schema
 
