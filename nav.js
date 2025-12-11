@@ -18,20 +18,20 @@ function getNavLinks() {
   } else if (currentUser.role === 'librarian') {
     links.push(
       { text: 'Profile', href: 'profile.html' },
-      { text: 'Manage Books', href: 'manageBooks.html' },
-      { text: 'Manage Authors', href: 'manageAuthors.html' },
-      { text: 'Manage Quotes', href: 'manage quotes.html' },
-      { text: 'Manage Members', href: 'member_mangement.html' },
+      { text: ' Books', href: 'manageBooks.html' },
+      { text: ' Authors', href: 'manageAuthors.html' },
+      { text: ' Quotes', href: 'manage quotes.html' },
+      { text: ' Members', href: 'member_mangement.html' },
       {text :'ChatBot',href:'chatbot.html'}
     );
   } else if (currentUser.role === 'admin') {
     links.push(
-        { text: 'Profile', href: 'profile.html' },
-      { text: 'Dashboard', href: 'AD with chatbot.html' },
-      { text: 'Manage Books', href: 'manageBooks.html' },
-      { text: 'Manage Authors', href: 'manageAuthors.html' },
-      { text: 'Manage Quotes', href: 'manage quotes.html' },
-      { text: 'Manage Users', href: 'ManageMembers&Librarians.html' },
+        { text: ' Profile ', href: 'profile.html' },
+      { text: ' Dashboard ', href: 'AD with chatbot.html' },
+      { text: ' Books', href: 'manageBooks.html' },
+      { text: ' Authors', href: 'manageAuthors.html' },
+      { text: ' Quotes', href: 'manage quotes.html' },
+      { text: ' Users&Librarians ', href: 'ManageMembers&Librarians.html' },
       {text :'ChatBot',href:'chatbot.html'}
     );
   }
@@ -203,3 +203,4 @@ function injectNav() {
 
 
 document.addEventListener('DOMContentLoaded', injectNav);
+
