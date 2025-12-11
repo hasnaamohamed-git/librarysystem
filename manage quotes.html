@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Library — Manage Quotes (Admin)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* CSS Variables */
+    :root{
+      --nav-blue:#083d6e;
+      --card-bg:#fff8f2;
+      --page-bg:#e9dccf;
+      --accent:#e07a2d;
+      --muted:#6b6b6b;
+      --radius:14px;
+      --shadow: 0 8px 20px rgba(22,22,22,0.12);
+      --glass-shadow: 0 6px 18px rgba(16,24,40,0.08);
+    }
+    html,body{height:100%;margin:0;font-family:'Poppins',system-ui,Arial; background: linear-gradient(180deg, #f7efe8 0%, var(--page-bg) 100%);}
+
+    
+    .app {
+    margin: 0; 
+    padding: 0;
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+
+    /* Top Header Bar */
+    .topbar{
+        height:70px;
+        background:var(--nav-blue);
+        border-radius:12px; 
+        display:flex;align-items:center;gap:18px;padding:12px 24px;color:white;
+        box-shadow:var(--shadow);
+    }
+    
+    /* Logo Placeholder */
+    .logo-placeholder {
+        width: 40px; height: 40px; border-radius: 8px; 
+        background: #fff9f4; display: flex; align-items: center; 
+        justify-content: center; color: var(--nav-blue); font-weight: 700;
+        font-size: 20px;
+    }
+
+    /* Search Bar Style */
+    .topbar .search-container{
+        flex:1; display:flex; align-items:center;
+    }
+    .topbar .search-input {
+        flex: 1;
+        display: flex; align-items: center;
+        background: white;
+        border-radius: 8px; 
+        padding: 8px 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        max-width: 500px;
+    }
+    .topbar .search-input input{
+        border:0; background:transparent; color:#333;
+        outline:none; font-size:16px; width:100%;
+    }
+    .search-icon{
+        color: var(--muted); margin-right: 8px; font-size: 18px;
+    }
+    
+    /* Icons and Avatar Style */
+    .topbar .icons{display:flex;gap:16px;align-items:center}
+    
+    .action-btn{
+        background:transparent;border:0;padding:6px 8px;border-radius:8px;cursor:pointer; font-size: 24px; color: white;
+        transition: transform 0.1s;
+    }
+    .action-btn:hover {transform: scale(1.05);}
+
+   
+
+    /* Content Area - Single Page */
+    .content{
+      margin-top:18px;
+    }
+
+    /* Panel (Page) Style */
+    .panel{
+      background:var(--card-bg);
+      border-radius:var(--radius);
+      box-shadow:var(--glass-shadow);
+      padding:22px;
+      min-height:520px;
+      position:relative;
+      overflow:auto;
+    }
+
+    /* Manage Quotes Header and Button */
+    .manage-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+    .page-header h2 {
+        margin: 0; color: var(--nav-blue); font-size: 26px;
+    }
+    .btn{
+      background:var(--accent);color:white;padding:10px 14px;border-radius:10px;border:0;cursor:pointer;font-weight:600;
+      box-shadow:0 6px 14px rgba(224,122,45,0.18);
+      font-size: 15px;
+    }
+    .btn.ghost{background:transparent;color:var(--nav-blue);border:1px solid rgba(15,76,129,0.08);box-shadow:none}
+
+    /* Table Styling */
+    table{width:100%;border-collapse:collapse;font-size:14px}
+    th,td{padding:12px 10px;text-align:left}
+    thead th{color:var(--muted);font-weight:600;font-size:13px}
+    tbody tr td{background:transparent;border-top:1px solid rgba(15,76,129,0.04)}
+
+    /* Table Actions */
+    .action-btn-table{background:var(--accent); color:white; border:0; padding:6px 12px; border-radius:8px; cursor:pointer; font-weight: 600; margin-right: 5px; font-size: 13px;}
+    .action-btn-table.delete {background: #c9302c;}
+    .table-actions{display:flex;gap:4px}
+
+    /* Modal Styling */
+    .modal-backdrop{position:fixed;inset:0;background:rgba(8,10,14,0.35);display:none;align-items:center;justify-content:center;padding:20px;z-index: 1000;}
+    .modal{width:560px;max-width:95%;background:var(--card-bg);border-radius:12px;padding:18px;box-shadow:var(--shadow)}
+    .modal h3{margin:0 0 12px}
+    .form-row{display:flex;gap:12px}
+    .form-row .col{flex:1}
+    .input{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(15,76,129,0.06);background:white}
+
+  </style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <div class="logo-placeholder">A</div> <div class="search-container">
+        <div class="search-input">
+            <span class="search-icon">🔍</span>
+            <input id="globalSearch" placeholder="Search quotes or authors..." />
+        </div>
+    </div>
+
+   </div>
+  </div>
+
+  <div class="content">
+    <section class="panel" id="managePanel" aria-labelledby="manage-heading">
+      <div class="manage-header">
+        <div class="page-header">
+            <h2 id="manage-heading">Manage Quotes</h2>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center">
+          <button class="btn" id="addQuoteBtn">Add Quote</button>
+        </div>
+      </div>
+
+      <div style="overflow:auto;">
+        <table aria-describedby="manage-heading">
+          <thead>
+            <tr><th style="width:6%">ID</th><th style="width:48%">Quote</th><th style="width:18%">Quoter</th><th style="width:18%">Author</th><th style="width:10%">Actions</th></tr>
+          </thead>
+          <tbody id="quotesTableBody">
+            </tbody>
+        </table>
+      </div>
+
+    </section>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true">
+  <div class="modal" role="document">
+    <h3 id="modalTitle">Add Quote</h3>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <textarea id="quoteText" rows="4" class="input" placeholder="Enter the quote text..."></textarea>
+      <div class="form-row">
+        <div class="col"><input id="quoteQuoter" class="input" placeholder="Quoter (e.g., 'Source')"/></div>
+        <div class="col"><input id="quoteAuthor" class="input" placeholder="Author name"/></div>
+      </div>
+      <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:6px">
+        <button class="btn ghost" id="cancelModal">Cancel</button>
+        <button class="btn" id="saveQuoteBtn">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // --- Local Storage Configuration ---
+  const STORAGE_KEY = 'myLibraryQuotes';
+  let quotes = []; 
+  let editId = null; 
+
+  // Load quotes from Local Storage or use mock data if empty
+  function loadQuotes() {
+    try {
+      const data = localStorage.getItem(STORAGE_KEY);
+      return data ? JSON.parse(data) : [
+        // Replaced mock data with the provided quotes
+        {id:1, quote:"You can make more friends in two months by becoming interested in other people than you can in two years by trying to get other people interested in you.", quoter:"Source", author:"Dale Carnegie"},
+        {id:2, quote:"The best way to find out if you can trust somebody is to trust them.", quoter:"Source", author:"Robert Kiyosaki"},
+        {id:3, quote:"الحياة ليست عادلة، ولكن علينا أن نكون عادلين", quoter:"Source", author:"Taha Hussein"},
+        {id:4, quote:"Those are decisions coming between rest the solutions that the world uses.", quoter:"Author Stanni", author:"M. Stanni"},
+        {id:5, quote:"التعليم هو السلاح الأقوى الذي يمكنك استخدامه لتغيير العالم", quoter:"Source", author:"Alaa Al Aswany"},
+        {id:6, quote:"If you want to be happy, be.", quoter:"Source", author:"Paulo Coelho"},
+        {id:7, quote:"It does not do to dwell on dreams and forget to live.", quoter:"Source", author:"J.K. Rowling"},
+        {id:8, quote:"الخوف لا يمنع الموت، إنما يمنع الحياة", quoter:"Source", author:"Naguib Mahfouz"},
+        {id:9, quote:"قراءة الكتب هي أفضل وسيلة للتعلم من تجارب الآخرين", quoter:"facebook profile", author:"Ihsan Abdel Quddous"},
+        {id:10, quote:"The rich do not work for money. They make money work for them.", quoter:"Author Profile", author:"Robert Kiyosaki"},
+        {id:11, quote:"Tourists while radicals do not divide as women.", quoter:"Author Guests", author:"Jane Austen"},
+        {id:12, quote:"Ten or two commit to the two absolute mentions.", quoter:"Author Machine", author:"A. Machine"}
+      ];
+    } catch (e) {
+      console.error("Error loading quotes from local storage", e);
+      return [];
+    }
+  }
+
+  // Save current quotes array to Local Storage
+  function saveQuotes(quotes) {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(quotes));
+    } catch (e) {
+      console.error("Error saving quotes to local storage", e);
+    }
+  }
+
+  // Placeholder function for future account page link
+  function goToAccountPage() {
+      alert("Redirecting to the Account/Profile page...");
+      // In a real application, you would use: window.location.href = 'account.html';
+  }
+  window.goToAccountPage = goToAccountPage;
+
+  // --- DOM References ---
+  const tableBody = document.getElementById('quotesTableBody');
+  const addBtn = document.getElementById('addQuoteBtn');
+  const modal = document.getElementById('modalBackdrop');
+  const modalTitle = document.getElementById('modalTitle');
+  const quoteText = document.getElementById('quoteText');
+  const quoteQuoter = document.getElementById('quoteQuoter');
+  const quoteAuthor = document.getElementById('quoteAuthor');
+  const saveBtn = document.getElementById('saveQuoteBtn');
+  const cancelBtn = document.getElementById('cancelModal');
+  const globalSearch = document.getElementById('globalSearch');
+
+  // --- Rendering Functions ---
+  function renderTable(filter=''){
+    tableBody.innerHTML = ''; 
+    const term = filter.trim().toLowerCase();
+    
+    const data = quotes.filter(q=>{
+      if(!term) return true;
+      return (q.quote+" "+q.quoter+" "+q.author).toLowerCase().includes(term);
+    });
+    
+    if(data.length===0 && term){
+      tableBody.innerHTML = `<tr><td colspan="5" style="text-align:center;color:var(--muted); padding: 12px;">No quotes found matching your search.</td></tr>`;
+      return;
+    } else if (data.length===0){
+        tableBody.innerHTML = `<tr><td colspan="5" style="text-align:center;color:var(--muted); padding: 12px;">No quotes added yet.</td></tr>`;
+        return;
+    }
+
+    data.forEach((q)=>{
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${q.id}</td> 
+        <td>${escapeHtml(q.quote)}</td>
+        <td>${escapeHtml(q.quoter)}</td>
+        <td>${escapeHtml(q.author)}</td>
+        <td>
+          <div class="table-actions">
+            <button class="action-btn-table" onclick="onEdit(${q.id})">Edit</button>
+            <button class="action-btn-table delete" onclick="onDelete(${q.id})">Delete</button>
+          </div>
+        </td>
+      `;
+      tableBody.appendChild(tr);
+    });
+  }
+
+  // Refreshes the table display based on current filter input
+  function refreshDisplay(){
+    renderTable(globalSearch.value);
+  }
+
+  // --- Modal Logic and CRUD Operations ---
+  addBtn.addEventListener('click', ()=>{
+    editId = null; modalTitle.textContent = 'Add Quote'; 
+    quoteText.value=''; quoteQuoter.value=''; quoteAuthor.value=''; 
+    openModal();
+  });
+  cancelBtn.addEventListener('click', closeModal);
+  modal.addEventListener('click', (e)=>{ if(e.target===modal) closeModal(); });
+
+  // Save/Update logic
+  saveBtn.addEventListener('click', ()=>{
+    const q = quoteText.value.trim(); 
+    const qt = quoteQuoter.value.trim() || 'Source'; 
+    const a = quoteAuthor.value.trim() || 'Unknown';
+    
+    if(!q){alert('Quote text cannot be empty'); return}
+    
+    if(editId){
+      const idx = quotes.findIndex(x=>x.id===editId);
+      if(idx>=0){quotes[idx].quote=q;quotes[idx].quoter=qt;quotes[idx].author=a;}
+    } else {
+      const newId = quotes.length > 0 ? Math.max(...quotes.map(x => x.id)) + 1 : 1;
+      const newItem = {id: newId, quote:q, quoter:qt, author:a};
+      quotes.unshift(newItem); 
+    }
+    
+    saveQuotes(quotes); 
+    closeModal(); 
+    refreshDisplay();
+  });
+
+  function onEdit(id){
+    const item = quotes.find(x=>x.id===id);
+    if(!item) return; 
+    editId=id; 
+    modalTitle.textContent='Edit Quote'; 
+    quoteText.value=item.quote; 
+    quoteQuoter.value=item.quoter; 
+    quoteAuthor.value=item.author; 
+    openModal();
+  }
+  
+  function onDelete(id){
+    if(!confirm('Are you sure you want to delete this quote?')) return;
+    quotes = quotes.filter(x=>x.id!==id);
+    saveQuotes(quotes); 
+    refreshDisplay();
+  }
+
+  function openModal(){ modal.style.display='flex'; document.body.style.overflow='hidden'; }
+  function closeModal(){ modal.style.display='none'; document.body.style.overflow='auto'; }
+
+  // --- Filter Handler ---
+  globalSearch.addEventListener('input', refreshDisplay);
+
+  // --- Helpers ---
+  function escapeHtml(text){ return String(text).replace(/[&<>\"]/g, function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','\\':'\\\\','"':'&quot;'}[c];}
+  ); }
+
+  // --- Initial Setup ---
+  quotes = loadQuotes(); 
+  refreshDisplay();
+
+  // Expose functions for inline onclick in the table
+  window.onEdit = onEdit; 
+  window.onDelete = onDelete;
+
+</script>
+</body>
+</html>

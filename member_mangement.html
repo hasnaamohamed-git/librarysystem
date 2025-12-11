@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f1e8;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: #f5f1e8;
+            overflow: hidden;
+        }
+
+        .header {
+            background: #1e3a5f;
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 5px;
+            padding: 8px 15px;
+            width: 350px;
+        }
+
+        .search-box input {
+            border: none;
+            outline: none;
+            width: 100%;
+            margin-left: 10px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .content-header h1 {
+            font-size: 32px;
+            color: #2c3e50;
+            font-weight: 700;
+        }
+
+        .action-btn {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #c87137, #b5652f);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #fff, #f9f7f4);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            border-left: 4px solid #c87137;
+        }
+        
+
+        .stat-card h3 {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+
+        .stat-card .value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+
+
+        .table-container {
+            background: white;
+            border-radius: 12px;
+            overflow-x: auto;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: linear-gradient(135deg, #d4c4a8, #c9b899);
+        }
+
+        thead th {
+            padding: 18px 15px;
+            text-align: left;
+            font-weight: bold;
+            color: #3a3a3a;
+            border-bottom: 3px solid #b8a285;
+            font-size: 15px;
+            text-transform: uppercase;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #e8e8e8;
+            transition: all 0.2s;
+        }
+
+        tbody tr:hover {
+            background: #f9f7f4;
+        }
+
+        tbody td {
+            padding: 16px 15px;
+            color: #444;
+            font-size: 14px;
+        }
+
+        .status-badge {
+            padding: 6px 18px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .status-active {
+            background: #90c896;
+            color: #2d5a32;
+        }
+
+        .status-inactive {
+            background: #f5a5a5;
+            color: #8b2020;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn-edit, .btn-delete, .btn-view {
+            padding: 7px 18px;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn-edit {
+            background: linear-gradient(135deg, #c87137, #b5652f);
+        }
+
+        .btn-edit:hover {
+            background: linear-gradient(135deg, #b5652f, #a05528);
+        }
+
+        .btn-delete {
+            background: linear-gradient(135deg, #d9534f, #c9302c);
+        }
+
+        .btn-delete:hover {
+            background: linear-gradient(135deg, #c9302c, #a92622);
+        }
+
+        .btn-view {
+            background: linear-gradient(135deg, #8b6f47, #6d5636);
+        }
+
+        .btn-view:hover {
+            background: linear-gradient(135deg, #6d5636, #5a4628);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .toast {
+            position: fixed;
+            top: 90px;
+            right: 30px;
+            background: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            display: none;
+            z-index: 1000;
+            border-left: 4px solid #4CAF50;
+        }
+
+        .toast.show {
+            display: block;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .toast.error {
+            border-left-color: #f44336;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .modal {
+            display: none;
+            position: absolute;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 200%;
+            background-color: rgba(0,0,0,0.5);
+            animation: fadeIn 0.3s;
+        }
+
+        .modal.show {
+            display: block;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            animation: slideDown 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideDown {
+            from { 
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to { 
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #c87137, #b5652f);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 12px 12px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .close {
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .close:hover {
+            color: #ffcccc;
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #c87137;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .modal-footer {
+            padding: 20px 30px;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .btn-cancel {
+            padding: 10px 25px;
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .btn-cancel:hover {
+            background: #5a6268;
+        }
+
+        .btn-submit {
+            padding: 10px 25px;
+            background: linear-gradient(135deg, #c87137, #b5652f);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        @media (max-width: 768px) {
+            .search-box {
+                width: 200px;
+            }
+            
+            .content-header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 10% auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="toast" id="toast"></div>
+
+    <div class="container">
+        <div class="header">
+                <div class="search-box">
+                    <span>🔍</span>
+                    <input type="text" placeholder="Search..." id="searchInput">
+                </div>
+            </div>
+        </div>
+
+        <div class="content" id="memberView">
+            <div class="stats-container">
+                <div class="stat-card">
+                    <h3>Total Members</h3>
+                    <div class="value" id="totalMembers">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Active Members</h3>
+                    <div class="value" id="activeMembers">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Borrowings</h3>
+                    <div class="value" id="totalBorrowings">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Outstanding Fines</h3>
+                    <div class="value" id="outstandingFines">$0</div>
+                </div>
+            </div>
+
+            <div class="content-header">
+                <h1>Member Management</h1>
+                <button class="action-btn" onclick="openAddMemberModal()">➕ Add New Member</button>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Active Borrowings</th>
+                            <th>Fines Due</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="memberTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+    <!-- Member Modal -->
+    <div id="memberModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="memberModalTitle">Add New Member</h2>
+                <span class="close" onclick="closeMemberModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="memberForm">
+                    <div class="form-group">
+                        <label>Full Name *</label>
+                        <input type="text" id="memberName" required placeholder="Enter full name">
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Email *</label>
+                            <input type="email" id="memberEmail" required placeholder="email@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label>password *</label>
+                            <input type="password" id="memberpassword" required placeholder="111111">
+                        </div>
+                        <div class="form-group">
+                            <label>Phone *</label>
+                            <input type="tel" id="memberPhone" required placeholder="+1 234 567 8900">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Address</label>
+                            <input type="text" id="memberAddress" placeholder="Enter address">
+                        </div>
+                        <div class="form-group">
+                            <label>City</label>
+                            <input type="text" id="memberCity" placeholder="Enter city">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Active Borrowings</label>
+                            <input type="number" id="memberactiveborrowed" placeholder="Enter Active Borrowings">
+                        </div>
+                        <div class="form-group">
+                            <label>Fines Due</label>
+                            <input type="number" id="memberfine" placeholder="Enter Fines Due">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select id="memberStatus">
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeMemberModal()">Cancel</button>
+                <button class="btn-submit" onclick="saveMember()">Save Member</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        let membersData = [];
+        let allMembers = [];
+        let editingMemberId = null;
+
+        function generateMockMembers() {
+            return [
+                {
+                    user_id: 1,
+                    username: "Ahmed Hassan",
+                    email: "ahmed.hassan@library.com",
+                    password: "111111",
+                    phone: "+20 100 123 4567",
+                    address: "12 Tahrir Street",
+                    city: "Cairo",
+                    activeBorrowings: 2,
+                    finesDue: "0.00",
+                    status: "active"
+                },
+                {
+                    user_id: 2,
+                    username: "Mona Ali",
+                    email: "mona.ali@library.com",
+                    password: "111222",
+                    phone: "+20 101 987 6543",
+                    address: "5 Nasr Road",
+                    city: "Giza",
+                    activeBorrowings: 1,
+                    finesDue: "5.50",
+                    status: "active"
+                },
+                {
+                    user_id: 3,
+                    username: "Omar Mohamed",
+                    email: "omar.mohamed@library.com",
+                    password: "222222",
+                    phone: "+20 112 223 4455",
+                    address: "32 Nile Corniche",
+                    city: "Cairo",
+                    activeBorrowings: 3,
+                    finesDue: "12.00",
+                    status: "inactive"
+                },
+                {
+                    user_id: 4,
+                    username: "Sara Ibrahim",
+                    email: "sara.ibrahim@library.com",
+                    password: "555555",
+                    phone: "+20 122 556 7788",
+                    address: "44 Zamalek Street",
+                    city: "Cairo",
+                    activeBorrowings: 0,
+                    finesDue: "0.00",
+                    status: "active"
+                },
+                {
+                    user_id: 5,
+                    username: "Youssef Adel",
+                    email: "youssef.adel@library.com",
+                    password: "666666",
+                    phone: "+20 109 778 3344",
+                    address: "10 El Mohandeseen Avenue",
+                    city: "Giza",
+                    activeBorrowings: 1,
+                    finesDue: "8.75",
+                    status: "active"
+                },
+                {
+                    user_id: 6,
+                    username: "Nour Ahmed",
+                    email: "nour.ahmed@library.com",
+                    password: "121212",
+                    phone: "+20 114 445 6677",
+                    address: "8 El Rehab City",
+                    city: "New Cairo",
+                    activeBorrowings: 0,
+                    finesDue: "0.00",
+                    status: "inactive"
+                },
+                {
+                    user_id: 7,
+                    username: "Karim Samir",
+                    email: "karim.samir@library.com",
+                    password: "333333",
+                    phone: "+20 120 998 1122",
+                    address: "14 Heliopolis Square",
+                    city: "Cairo",
+                    activeBorrowings: 2,
+                    finesDue: "3.00",
+                    status: "active"
+                },
+                {
+                    user_id: 8,
+                    username: "Laila Mostafa",
+                    email: "laila.mostafa@library.com",
+                    password: "999999",
+                    phone: "+20 111 333 5555",
+                    address: "20 Maadi Street",
+                    city: "Cairo",
+                    activeBorrowings: 1,
+                    finesDue: "0.00",
+                    status: "active"
+                },
+                {
+                    user_id: 9,
+                    username: "Hassan Tarek",
+                    email: "hassan.tarek@library.com",
+                    password: "898989",
+                    phone: "+20 127 777 9999",
+                    address: "9 Downtown Cairo",
+                    city: "Cairo",
+                    activeBorrowings: 3,
+                    finesDue: "15.00",
+                    status: "inactive"
+                },
+                {
+                    user_id: 10,
+                    username: "Rana Khaled",
+                    email: "rana.khaled@library.com",
+                    password: "676767",
+                    phone: "+20 106 456 7890",
+                    address: "6 El Sheikh Zayed",
+                    city: "Giza",
+                    activeBorrowings: 0,
+                    finesDue: "0.00",
+                    status: "active"
+               }
+            ];
+        }
+
+
+        function populateMembersTable(data) {
+            const tbody = document.getElementById('memberTableBody');
+            tbody.innerHTML = '';
+            
+            if (data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:20px;">No members found</td></tr>';
+                return;
+            }
+
+            data.forEach(member => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${member.user_id}</td>
+                    <td><strong>${member.username}</strong></td>
+                    <td>${member.email}</td>
+                    <td>${member.phone}</td>
+                    <td style="text-align:center;">${member.activeBorrowings}</td>
+                    <td style="color:${Number(member.finesDue) > 0 ? '#d9534f' : '#5cb85c'}; font-weight:bold;">$${Number(member.finesDue || 0).toFixed(2)}</td>
+                    <td><span class="status-badge ${member.status === 'active' ? 'status-active' : 'status-inactive'}">${member.status}</span></td>
+                    <td>
+                        <div class="btn-group">
+                            <button class="btn-edit" onclick="editMember(${member.user_id})">Edit</button>
+                            <button class="btn-view" onclick="viewMemberActivity(${member.user_id})">View</button>
+                            <button class="btn-delete" onclick="deleteMember(${member.user_id})">Delete</button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+       
+        function updateMemberStats() {
+            const activeMembers = membersData.filter(m => m.status === 'active').length;
+    
+            const totalBorrowings = membersData.reduce((sum, m) => {
+                const bor = typeof m.activeBorrowings === 'number' ? m.activeBorrowings : parseInt(m.activeBorrowings || 0, 10);
+                return sum + (Number.isNaN(bor) ? 0 : bor);
+            }, 0);
+
+            const totalFines = membersData.reduce((sum, m) => {
+                const fine = typeof m.finesDue === 'number' ? m.finesDue : parseFloat(m.finesDue || 0);
+                return sum + (Number.isNaN(fine) ? 0 : fine);
+            }, 0);
+
+            document.getElementById('totalMembers').textContent = membersData.length;
+            document.getElementById('activeMembers').textContent = activeMembers;
+            document.getElementById('totalBorrowings').textContent = totalBorrowings;
+            document.getElementById('outstandingFines').textContent = '$' + totalFines.toFixed(2);
+        }
+
+
+
+        function openAddMemberModal() {
+            editingMemberId = null;
+            document.getElementById('memberModalTitle').textContent = 'Add New Member';
+            document.getElementById('memberForm').reset();
+            document.getElementById('memberModal').classList.add('show');
+        }
+
+        function closeMemberModal() {
+            document.getElementById('memberModal').classList.remove('show');
+            editingMemberId = null;
+        }
+
+        function editMember(id) {
+            const member = membersData.find(m => m.user_id === id);
+            if (!member) return;
+
+            editingMemberId = id;
+            document.getElementById('memberModalTitle').textContent = 'Edit Member';
+            document.getElementById('memberName').value = member.username;
+            document.getElementById('memberEmail').value = member.email;
+            document.getElementById('memberpassword').value = member.password;
+            document.getElementById('memberPhone').value = member.phone;
+            document.getElementById('memberactiveborrowed').value = member.activeBorrowings;
+            document.getElementById('memberfine').value = member.finesDue;
+            document.getElementById('memberAddress').value = member.address || '';
+            document.getElementById('memberCity').value = member.city || '';
+            document.getElementById('memberStatus').value = member.status;
+            
+            document.getElementById('memberModal').classList.add('show');
+        }
+
+        function saveMember() {
+            const name = document.getElementById('memberName').value.trim();
+            const email = document.getElementById('memberEmail').value.trim();
+            const password = document.getElementById('memberpassword').value.trim();
+            const phone = document.getElementById('memberPhone').value.trim();
+            const activeBorrowingsRaw = document.getElementById('memberactiveborrowed').value.trim();
+            const finesDueRaw = document.getElementById('memberfine').value.trim();
+            const address = document.getElementById('memberAddress').value.trim();
+            const city = document.getElementById('memberCity').value.trim();
+            const status = document.getElementById('memberStatus').value;
+
+            const activeBorrowings = activeBorrowingsRaw === '' ? 0 : parseInt(activeBorrowingsRaw, 10);
+            const finesDue = finesDueRaw === '' ? 0 : parseFloat(finesDueRaw);
+
+
+            if (!name || !email || !phone || !password) {
+                showToast('Please fill all required fields!', 'error');
+                return;
+            }
+
+            if (editingMemberId) {
+                const member = membersData.find(m => m.user_id === editingMemberId);
+                if (member) {
+                    member.username = name;
+                    member.email = email;
+                    member.password = password;
+                    member.phone = phone;
+                    member.activeBorrowings = Number.isNaN(activeBorrowings) ? 0 : activeBorrowings;
+                    member.finesDue = Number.isNaN(finesDue) ? 0 : finesDue;
+                    member.address = address;
+                    member.city = city;
+                    member.status = status;
+                    showToast('Member updated successfully!');
+                }
+            } else {
+                const newMember = {
+                    user_id: Math.max(...membersData.map(m => m.user_id), 0) + 1,
+                    username: name,
+                    email: email,
+                    password: password,
+                    phone: phone,
+                    activeBorrowings: Number.isNaN(activeBorrowings) ? 0 : activeBorrowings,
+                    finesDue: Number.isNaN(finesDue) ? 0 : finesDue,
+                    address: address,
+                    city: city,
+                    status: status
+                };
+                membersData.push(newMember);
+                showToast('New member added successfully!');
+            }
+
+            allMembers = membersData.slice();
+            populateMembersTable(membersData);
+            updateMemberStats();
+            closeMemberModal();
+        }
+
+        function viewMemberActivity(id) {
+            const member = membersData.find(m => m.user_id === id);
+            if (!member) return;
+
+            alert(`Member Details:\n\nName: ${member.username}\nEmail: ${member.email}\nPhone: ${member.phone}\nAddress: ${member.address || 'N/A'}\nCity: ${member.city || 'N/A'}\nActive Borrowings: ${member.activeBorrowings}\nFines Due: ${member.finesDue}\nStatus: ${member.status}`);
+        }
+
+        function deleteMember(id) {
+            const member = membersData.find(m => m.user_id === id);
+            if (!member) return;
+
+            if (confirm(`Delete member "${member.username}"?`)) {
+                membersData = membersData.filter(m => m.user_id !== id);
+                allMembers = membersData.slice();
+                populateMembersTable(membersData);
+                updateMemberStats();
+                showToast('Member deleted successfully');
+            }
+        }
+
+       
+        function performSearch(term) {
+            const memberView = document.getElementById('memberView');
+            const isSearchingMembers = !memberView.classList.contains('hidden');
+
+            if (term === '') {
+                if (isSearchingMembers) {
+                    populateMembersTable(allMembers);
+                } 
+                return;
+            }
+
+            if (isSearchingMembers) {
+                const filtered = allMembers.filter(member => 
+                    member.username.toLowerCase().includes(term) ||
+                    member.email.toLowerCase().includes(term) ||
+                    member.phone.includes(term) ||
+                    member.user_id.toString().includes(term)
+                );
+                populateMembersTable(filtered);
+            } 
+        }
+
+        function showToast(message, type) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast show' + (type === 'error' ? ' error' : '');
+            
+            setTimeout(function() {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const term = e.target.value.toLowerCase().trim();
+            performSearch(term);
+        });
+
+        window.onclick = function(event) {
+            const memberModal = document.getElementById('memberModal');
+            
+            if (event.target == memberModal) {
+                closeMemberModal();
+            }
+        }
+
+        window.onload = function() {
+            membersData = generateMockMembers();
+            allMembers = membersData.slice();
+            populateMembersTable(membersData);
+            updateMemberStats();
+
+            
+        };
+    </script>
+    <script src="nav.js"></script>
+</body>
+</html>
