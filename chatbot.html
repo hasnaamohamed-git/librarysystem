@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Library AI Assistant</title>
+    <style>
+        /* تعريف متغيرات CSS */
+        :root {
+            --primary: #3182ce;
+            --border: #e2e8f0;
+        }
+        
+        /* تنسيق الصفحة كاملة */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        /* Chatbot كامل الشاشة */
+        .chatbot-fullscreen {
+            width: 100%;
+            max-width: 900px;
+            height: 90vh;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .chatbot-header {
+            background: linear-gradient(to right, var(--primary), #2c5282);
+            color: white;
+            padding: 25px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .chatbot-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .chatbot-header .status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            background: #4ade80;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .chatbot-messages {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            background: #f8fafc;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .message {
+            max-width: 85%;
+            padding: 16px 20px;
+            border-radius: 20px;
+            line-height: 1.5;
+            font-size: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            word-break: break-word;
+        }
+
+        .bot-message {
+            background: #e8f2ff;
+            border-bottom-left-radius: 8px;
+            align-self: flex-start;
+            color: #1e4c8c;
+            border: 1px solid #d1e3ff;
+        }
+
+        .user-message {
+            background: linear-gradient(135deg, var(--primary), #2c5282);
+            color: white;
+            border-bottom-right-radius: 8px;
+            align-self: flex-end;
+        }
+
+        .chatbot-input-area {
+            padding: 25px 30px;
+            border-top: 1px solid var(--border);
+            background: white;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .chatbot-input-area input {
+            flex: 1;
+            padding: 16px 20px;
+            border: 2px solid var(--border);
+            border-radius: 25px;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.3s;
+            background: #f8fafc;
+        }
+
+        .chatbot-input-area input:focus {
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
+        }
+
+        .chatbot-input-area button {
+            background: linear-gradient(135deg, var(--primary), #2c5282);
+            color: white;
+            border: none;
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 20px;
+            transition: all 0.3s;
+            box-shadow: 0 6px 15px rgba(49, 130, 206, 0.3);
+        }
+
+        .chatbot-input-area button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(49, 130, 206, 0.4);
+        }
+
+        .typing-indicator {
+            display: flex;
+            gap: 6px;
+            padding: 12px 20px;
+            background: #e8f2ff;
+            border-radius: 20px;
+            border-bottom-left-radius: 8px;
+            align-self: flex-start;
+            width: fit-content;
+        }
+
+        .typing-dot {
+            width: 10px;
+            height: 10px;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0%, 60%, 100% {
+                transform: translateY(0);
+                opacity: 0.6;
+            }
+            30% {
+                transform: translateY(-8px);
+                opacity: 1;
+            }
+        }
+
+        /* Quick questions */
+        .quick-questions {
+            padding: 15px 30px;
+            background: #f1f5f9;
+            border-top: 1px solid var(--border);
+        }
+
+        .quick-questions h4 {
+            color: #4a5568;
+            margin-bottom: 12px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .questions-container {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .question-chip {
+            background: white;
+            border: 1px solid var(--border);
+            color: #4a5568;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 13px;
+        }
+
+        .question-chip:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        /* Scrollbar styling */
+        .chatbot-messages::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .chatbot-messages::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+
+        .chatbot-messages::-webkit-scrollbar-thumb {
+            background: #cbd5e0;
+            border-radius: 4px;
+        }
+
+        .chatbot-messages::-webkit-scrollbar-thumb:hover {
+            background: #a0aec0;
+        }
+
+        @media (max-width: 768px) {
+            .chatbot-fullscreen {
+                height: 95vh;
+                border-radius: 15px;
+            }
+            
+            .chatbot-header {
+                padding: 20px;
+            }
+            
+            .chatbot-header h1 {
+                font-size: 22px;
+            }
+            
+            .chatbot-messages {
+                padding: 20px;
+            }
+            
+            .message {
+                max-width: 90%;
+                font-size: 14px;
+                padding: 14px 18px;
+            }
+            
+            .chatbot-input-area {
+                padding: 20px;
+            }
+            
+            .quick-questions {
+                padding: 15px 20px;
+            }
+            
+            .questions-container {
+                gap: 8px;
+            }
+            
+            .question-chip {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .chatbot-fullscreen {
+                height: 100vh;
+                border-radius: 10px;
+            }
+            
+            .chatbot-header h1 {
+                font-size: 20px;
+            }
+            
+            .message {
+                max-width: 95%;
+            }
+        }
+        
+        .nav-links {
+        display: flex;
+        gap: 20px;
+        font-size: 14px;
+        align-items: center;
+      }
+
+      .nav-links a,
+      .nav-links button {
+        text-decoration: none;
+        color: white;
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+        padding: 5px 10px;
+        border-radius: 5px;
+        transition: color 0.3s;
+      }
+
+      .nav-links a:hover,
+      .nav-links button:hover {
+        color: #e67e22;
+      }
+
+      .nav-links a.active {
+        color: #e67e22;
+        font-weight: bold;
+      }
+    </style>
+</head>
+<body>
+    <!-- Chatbot كامل الشاشة -->
+    <div class="chatbot-fullscreen">
+        <div class="chatbot-header">
+            <h1>
+                <span>🤖</span>
+                Library AI Assistant
+            </h1>
+            <div class="nav-links">
+            <a href="profile.html" id="MyProfile" class="active">MyProfile</a>
+          </div>
+            <div class="status">
+                <div class="status-dot"></div>
+                <span>Online • Ready to help</span>
+            </div>
+        </div>
+        
+        <div class="chatbot-messages" id="chatbotMessages">
+            <div class="message bot-message">
+                Hello! I'm your Library AI Assistant. I can help with book recommendations, library information, and answer your questions about library services.
+            </div>
+            <div class="message bot-message">
+                Try asking me about:
+                <ul style="margin-top: 8px; padding-left: 20px;">
+                    <li>Popular books and recommendations</li>
+                    <li>Library opening hours</li>
+                    <li>Borrowing policies and limits</li>
+                    <li>Membership information</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="quick-questions">
+            <h4>Quick questions:</h4>
+            <div class="questions-container">
+                <div class="question-chip" onclick="askQuestion('What are the library hours?')">Library hours?</div>
+                <div class="question-chip" onclick="askQuestion('How many books can I borrow?')">Borrowing limit?</div>
+                <div class="question-chip" onclick="askQuestion('What is the most popular book?')">Popular books?</div>
+                <div class="question-chip" onclick="askQuestion('How do I pay fines?')">Pay fines?</div>
+                <div class="question-chip" onclick="askQuestion('Can you recommend books?')">Book recommendations</div>
+            </div>
+        </div>
+        
+        <div class="chatbot-input-area">
+            <input
+                type="text"
+                id="chatbotInput"
+                placeholder="Ask me anything about the library..."
+                autocomplete="off"
+            />
+            <button id="sendChatbotMessage">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Chatbot Functionality with intelligent responses
+        const sendButton = document.getElementById("sendChatbotMessage");
+        const chatbotInput = document.getElementById("chatbotInput");
+        const chatbotMessages = document.getElementById("chatbotMessages");
+
+        // Intelligent response database
+        const chatbotResponses = {
+            greetings: [
+                "Hello! How can I help you with library services today?",
+                "Hi there! I'm your Library AI Assistant. What would you like to know?",
+                "Welcome! I can help with book recommendations, library info, and more.",
+            ],
+            help: [
+                "I can help you with: book recommendations, library hours, borrowing policies, finding specific books.",
+                "I'm here to help with library services, book suggestions, and answering questions about our collection.",
+                "Ask me about popular books, opening hours, how to borrow books, or any other library-related questions!",
+            ],
+            hours: [
+                "Our library is open Monday-Friday 8am-9pm, Saturday 9am-6pm, and Sunday 11am-5pm.",
+                "Opening hours: Weekdays 8am-9pm, Saturday 9am-6pm, Sunday 11am-5pm.",
+                "We're open 8am-9pm on weekdays, 9am-6pm Saturday, and 11am-5pm Sunday.",
+            ],
+            borrowing: [
+                "You can borrow 10 items maximum for 21 days. Renewals are available for most items.",
+                "Borrowing policy: 10 items maximum, 3-week loan period, 2 renewals allowed.",
+            ],
+            popular: [
+                "Based on our analytics, the most popular book this month is 'The Midnight Library'.",
+                "The trending book right now is 'Project Hail Mary'.",
+                "Our most borrowed book this month is 'The Midnight Library'. Would you like more recommendations?",
+            ],
+            categories: [
+                "We have books in many categories including: Romance, Mystery, Sci-Fi, Fantasy, Biography, History, Self-Help, Business, Fiction, and Non-Fiction.",
+                "Available book categories: Romance, Mystery, Science Fiction, Fantasy, Biography, History, Self-Help, Business, General Fiction, and Non-Fiction.",
+                "Our library offers these main categories: Romance, Mystery, Sci-Fi, Fantasy, Biography, History, Self-Help, Business, Fiction, and Non-Fiction books.",
+            ],
+            // Specific category responses
+            romance: [
+                "For romance lovers, I recommend: 'The Notebook' by Nicholas Sparks, 'Pride and Prejudice' by Jane Austen, 'Outlander' by Diana Gabaldon.",
+                "Popular romance books: 'The Love Hypothesis' by Ali Hazelwood, 'It Ends With Us' by Colleen Hoover, 'The Spanish Love Deception' by Elena Armas, and 'Bridgerton' series by Julia Quinn.",
+                "Romance recommendations: 'Me Before You' by Jojo Moyes, 'The Hating Game' by Sally Thorne, 'The Unhoneymooners' by Christina Lauren, and 'Beach Read' by Emily Henry.",
+            ],
+            mystery: [
+                "Mystery recommendations: 'The Silent Patient' by Alex Michaelides, 'Gone Girl' by Gillian Flynn, 'The Girl with the Dragon Tattoo' by Stieg Larsson, and 'The Da Vinci Code' by Dan Brown.",
+                "For mystery fans: 'Big Little Lies' by Liane Moriarty, 'The Guest List' by Lucy Foley, 'Sharp Objects' by Gillian Flynn, and 'The Woman in the Window' by A.J. Finn.",
+                "Popular mystery books: 'The Thursday Murder Club' by Richard Osman, 'One of Us Is Lying' by Karen M. McManus, 'The Maid' by Nita Prose, and 'Magpie Murders' by Anthony Horowitz.",
+            ],
+            scifi: [
+                "Sci-Fi recommendations: 'Project Hail Mary' by Andy Weir, 'The Three-Body Problem' by Cixin Liu, 'Dune' by Frank Herbert, and 'The Martian' by Andy Weir.",
+                "For science fiction: '1984' by George Orwell, 'Brave New World' by Aldous Huxley, 'Foundation' by Isaac Asimov, and 'Neuromancer' by William Gibson.",
+                "Popular sci-fi: 'Ready Player One' by Ernest Cline, 'The Left Hand of Darkness' by Ursula K. Le Guin, 'Snow Crash' by Neal Stephenson, and 'Children of Time' by Adrian Tchaikovsky.",
+            ],
+            fantasy: [
+                "Fantasy recommendations: 'The Hobbit' by J.R.R. Tolkien, 'Harry Potter series' by J.K. Rowling, 'The Name of the Wind' by Patrick Rothfuss, and 'The Lord of the Rings' trilogy.",
+                "For fantasy lovers: 'A Game of Thrones' by George R.R. Martin, 'The Chronicles of Narnia' by C.S. Lewis, 'The Way of Kings' by Brandon Sanderson, and 'Mistborn' by Brandon Sanderson.",
+                "Popular fantasy: 'The Priory of the Orange Tree' by Samantha Shannon, 'Circe' by Madeline Miller, 'The Poppy War' by R.F. Kuang, and 'The City of Brass' by S.A. Chakraborty.",
+            ],
+            biography: [
+                "Biography recommendations: 'Becoming' by Michelle Obama, 'Educated' by Tara Westover, 'Steve Jobs' by Walter Isaacson, and 'The Diary of a Young Girl' by Anne Frank.",
+                "For biographies: 'Leonardo da Vinci' by Walter Isaacson, 'Elon Musk' by Walter Isaacson, 'I Am Malala' by Malala Yousafzai, and 'Born a Crime' by Trevor Noah.",
+                "Popular biographies: 'The Splendid and the Vile' by Erik Larson, 'Benjamin Franklin' by Walter Isaacson, 'Wild Swans' by Jung Chang, and 'Alexander Hamilton' by Ron Chernow.",
+            ],
+            history: [
+                "History book recommendations: 'Sapiens' by Yuval Noah Harari, 'A People's History of the United States' by Howard Zinn, 'Guns, Germs, and Steel' by Jared Diamond, and 'The Silk Roads' by Peter Frankopan.",
+                "For history buffs: 'The Wright Brothers' by David McCullough, 'SPQR' by Mary Beard, 'The Rise and Fall of the Third Reich' by William L. Shirer, and '1491' by Charles C. Mann.",
+                "Popular history: 'Team of Rivals' by Doris Kearns Goodwin, 'The Immortal Life of Henrietta Lacks' by Rebecca Skloot, 'Say Nothing' by Patrick Radden Keefe, and 'The Warmth of Other Suns' by Isabel Wilkerson.",
+            ],
+            selfhelp: [
+                "Self-Help recommendations: 'Atomic Habits' by James Clear, 'The Subtle Art of Not Giving a F*ck' by Mark Manson, 'The 7 Habits of Highly Effective People' by Stephen Covey, and 'How to Win Friends and Influence People' by Dale Carnegie.",
+                "For personal development: 'Think and Grow Rich' by Napoleon Hill, 'The Power of Now' by Eckhart Tolle, 'Mindset' by Carol Dweck, and 'The Four Agreements' by Don Miguel Ruiz.",
+                "Popular self-help: 'The 5 Love Languages' by Gary Chapman, 'You Are a Badass' by Jen Sincero, 'The Life-Changing Magic of Tidying Up' by Marie Kondo, and 'Daring Greatly' by Brené Brown.",
+            ],
+            business: [
+                "Business book recommendations: 'The Lean Startup' by Eric Ries, 'Good to Great' by Jim Collins, 'The Hard Thing About Hard Things' by Ben Horowitz, and 'Zero to One' by Peter Thiel.",
+                "For business insights: 'Thinking, Fast and Slow' by Daniel Kahneman, 'The Innovator's Dilemma' by Clayton Christensen, 'Start with Why' by Simon Sinek, and 'Blink' by Malcolm Gladwell.",
+                "Popular business books: 'Outliers' by Malcolm Gladwell, 'Rich Dad Poor Dad' by Robert Kiyosaki, 'The E-Myth Revisited' by Michael E. Gerber, and 'Crushing It!' by Gary Vaynerchuk.",
+            ],
+            // General fiction/non-fiction
+            fiction: [
+                "Fiction recommendations: 'The Midnight Library' by Matt Haig, 'The Alchemist' by Paulo Coelho, 'The Book Thief' by Markus Zusak, and 'A Man Called Ove' by Fredrik Backman.",
+                "Popular fiction: 'Where the Crawdads Sing' by Delia Owens, 'The Kite Runner' by Khaled Hosseini, 'Little Fires Everywhere' by Celeste Ng, and 'Normal People' by Sally Rooney.",
+            ],
+            nonfiction: [
+                "Non-Fiction recommendations: 'Sapiens' by Yuval Noah Harari, 'Educated' by Tara Westover, 'Becoming' by Michelle Obama, and 'Thinking, Fast and Slow' by Daniel Kahneman.",
+                "Popular non-fiction: 'The Body' by Bill Bryson, 'Educated' by Tara Westover, 'Born a Crime' by Trevor Noah, and 'Bad Blood' by John Carreyrou.",
+            ],
+            fines: [
+                "Outstanding fines can be paid online through your member portal or at the front desk.",
+                "You can pay fines online via your account or in person at the library.",
+                "Fines can be paid online or at the circulation desk.",
+            ],
+            membership: [
+                "New members can register online or in-person at the library. Registration is free!",
+                "Membership is free! You can register online or visit us in person with ID proof.",
+                "Registration takes 5 minutes and is completely free.",
+            ],
+            unknown: [
+                "I'm not sure I understand. Could you rephrase that?",
+                "I'm here to help with library-related questions. Try asking about books, hours, or policies.",
+                "Could you ask that differently? I'm best at answering library and book-related questions.",
+            ],
+        };
+
+        // Function to determine the best response
+        function getAppropriateResponse(message) {
+            const lowerMsg = message.toLowerCase();
+            console.log("Processing message:", lowerMsg);
+
+            // Check for greeting patterns
+            if (
+                /(hi|hello|hey|greetings|good morning|good afternoon|good evening)/.test(
+                    lowerMsg
+                )
+            ) {
+                return getRandomResponse("greetings");
+            }
+
+            // Check for help requests
+            if (/(help|what can you do|capabilities|features)/.test(lowerMsg)) {
+                return getRandomResponse("help");
+            }
+
+            // Check for time/hours questions
+            if (/(hour|open|close|time|when.*open|schedule)/.test(lowerMsg)) {
+                return getRandomResponse("hours");
+            }
+
+            // Check for borrowing questions
+            if (/(borrow|loan|rent|check out|take out|borrowing)/.test(lowerMsg)) {
+                return getRandomResponse("borrowing");
+            }
+
+            // Check for popular book questions
+            if (
+                /(popular|trending|best.*seller|top.*book|most.*borrowed)/.test(
+                    lowerMsg
+                )
+            ) {
+                return getRandomResponse("popular");
+            }
+
+            // Check for categories question
+            if (/(categories|types|genres|kinds|what.*have|what.*categories)/.test(lowerMsg)) {
+                return getRandomResponse("categories");
+            }
+
+            // Check for specific genre requests - MUST BE BEFORE GENERAL RECOMMENDATIONS
+            if (/(romance|love|romantic)/.test(lowerMsg)) {
+                return getRandomResponse("romance");
+            }
+            
+            if (/(mystery|thriller|suspense|crime)/.test(lowerMsg)) {
+                return getRandomResponse("mystery");
+            }
+            
+            if (/(sci.*fi|science.*fiction|space.*future)/.test(lowerMsg)) {
+                return getRandomResponse("scifi");
+            }
+            
+            if (/(fantasy|magic|wizard|dragon)/.test(lowerMsg)) {
+                return getRandomResponse("fantasy");
+            }
+            
+            if (/(biography|autobiography|memoir|life.*story)/.test(lowerMsg)) {
+                return getRandomResponse("biography");
+            }
+            
+            if (/(history|historical|past|war)/.test(lowerMsg)) {
+                return getRandomResponse("history");
+            }
+            
+            if (/(self.*help|self.*improvement|personal.*development)/.test(lowerMsg)) {
+                return getRandomResponse("selfhelp");
+            }
+            
+            if (/(business|entrepreneur|startup|management)/.test(lowerMsg)) {
+                return getRandomResponse("business");
+            }
+            
+            if (/(fiction|novel|story)/.test(lowerMsg)) {
+                return getRandomResponse("fiction");
+            }
+            
+            if (/(non.*fiction|nonfiction|real.*story|true.*story)/.test(lowerMsg)) {
+                return getRandomResponse("nonfiction");
+            }
+
+            // Check for recommendation requests
+            if (/(recommend|suggest|what.*read|book.*idea|what.*book)/.test(lowerMsg)) {
+                return getRandomResponse("categories");
+            }
+
+            // Check for fines questions
+            if (/(fine|fee|payment|pay.*fine|overdue|late)/.test(lowerMsg)) {
+                return getRandomResponse("fines");
+            }
+
+            // Check for membership questions
+            if (/(member|join|register|sign up|membership)/.test(lowerMsg)) {
+                return getRandomResponse("membership");
+            }
+
+            // Check for simple acknowledgments
+            if (
+                /(ok|okay|thanks|thank you|cool|good|nice|alright)/.test(lowerMsg)
+            ) {
+                return "Is there anything else I can help you with?";
+            }
+
+            // Check for "really" or confirmation questions
+            if (/(really|are you sure|serious|true)/.test(lowerMsg)) {
+                return "Yes, that's correct based on our current library data. Would you like more details?";
+            }
+
+            // Default response
+            return getRandomResponse("unknown");
+        }
+
+        function getRandomResponse(category) {
+            const responses = chatbotResponses[category];
+            return responses[Math.floor(Math.random() * responses.length)];
+        }
+
+        // Send message function
+        function sendChatbotMessage() {
+            const message = chatbotInput.value.trim();
+            if (!message) return;
+
+            // Add user message
+            const userMessage = document.createElement("div");
+            userMessage.className = "message user-message";
+            userMessage.textContent = message;
+            chatbotMessages.appendChild(userMessage);
+
+            // Clear input
+            chatbotInput.value = "";
+
+            // Scroll to bottom
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+
+            // Show typing indicator
+            const typingIndicator = document.createElement("div");
+            typingIndicator.className = "typing-indicator";
+            typingIndicator.innerHTML =
+                '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+            chatbotMessages.appendChild(typingIndicator);
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+
+            // Get appropriate response and reply after delay
+            setTimeout(() => {
+                // Remove typing indicator
+                typingIndicator.remove();
+
+                // Add bot response
+                const botMessage = document.createElement("div");
+                botMessage.className = "message bot-message";
+
+                // Get intelligent response
+                const response = getAppropriateResponse(message);
+                botMessage.textContent = response;
+
+                chatbotMessages.appendChild(botMessage);
+                chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+            }, 800 + Math.random() * 400); // Random delay between 0.8-1.2 seconds
+        }
+
+        // Function to ask question from quick questions
+        function askQuestion(question) {
+            chatbotInput.value = question;
+            sendChatbotMessage();
+        }
+
+        // Send message on button click
+        sendButton.addEventListener("click", sendChatbotMessage);
+
+        // Send message on Enter key
+        chatbotInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") {
+                sendChatbotMessage();
+            }
+        });
+
+        // Focus on input when page loads
+        window.addEventListener('load', () => {
+            chatbotInput.focus();
+        });
+
+        // Add a welcome message after initial load
+        setTimeout(() => {
+            const welcomeMsg = document.createElement("div");
+            welcomeMsg.className = "message bot-message";
+            welcomeMsg.textContent =
+                "Need help finding books or information about library services? I'm here to help!";
+            chatbotMessages.appendChild(welcomeMsg);
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        }, 1500);
+
+        // Auto-suggest on input
+        chatbotInput.addEventListener('input', function() {
+            if (this.value.length > 2) {
+                // يمكن إضافة اقتراحات تلقائية هنا إذا أردت
+            }
+        });
+    </script>
+</body>
+</html>
