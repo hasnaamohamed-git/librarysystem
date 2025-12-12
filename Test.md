@@ -27,7 +27,6 @@ This document provides a complete test plan for the Library Management System, f
 
 ## 🧩 2. Admin Role – Test Scenarios
 
-**[Watch Demo Video](#)** *()*
 
 ### A. Admin Login
 - [ ] Test login page UI components
@@ -91,7 +90,6 @@ This document provides a complete test plan for the Library Management System, f
 
 ## 🧩 3. Librarian Role – Test Scenarios
 
-[Watch Demo Video](librianvideo.mp4)
 
 ### A. Quotes Management
 - [ ] View quotes list
@@ -135,8 +133,6 @@ This document provides a complete test plan for the Library Management System, f
 ---
 
 ## 🧩 4. Member Role – Test Scenarios
-
-**[Watch Demo Video](#)** *(Add your video link here)*
 
 ### A. Home Page
 - [ ] Homepage shows featured content
