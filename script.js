@@ -24,26 +24,81 @@ const books = [
 ];
 
 // =============== POPUP Functions ===============
+// LocalStorage
+let borrowedBooks = JSON.parse(localStorage.getItem('borrowedBooks') || '[]');
+let reservedBooks = JSON.parse(localStorage.getItem('reservedBooks') || '[]');
+let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+let userRatings = JSON.parse(localStorage.getItem('userRatings') || '{}');
+
+function saveData() {
+    localStorage.setItem('borrowedBooks', JSON.stringify(borrowedBooks));
+    localStorage.setItem('reservedBooks', JSON.stringify(reservedBooks));
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+    localStorage.setItem('userRatings', JSON.stringify(userRatings));
+    updateCounts();
+}
+
+function updateCounts() {
+    document.getElementById('borrowedCount').textContent = borrowedBooks.length;
+    document.getElementById('reservedCount').textContent = reservedBooks.length;
+    document.getElementById('favCount').textContent = favorites.length;
+}
+
+let currentBookId = null;
+
+// Open Popup
 function openPopup(bookId) {
     const book = books.find(b => b.id === bookId);
-    if (!book) {
-        console.error(`Book with ID ${bookId} not found.`);
-        return;
-    }
+    if (!book) return;
+    currentBookId = bookId;
 
     document.getElementById("popupImage").src = book.cover_image;
     document.getElementById("popupTitle").innerText = book.title;
     document.getElementById("popupDesc").innerText = book.description;
-    document.getElementById("popupAuthor").innerText = `Author ID: ${book.author_id}`;
+    document.getElementById("popupAuthor").innerText = book.author_id;
     document.getElementById("popupAvailable").innerText = book.available_copies;
 
-    const starsContainer = document.getElementById("popupStars");
-    starsContainer.innerHTML = "";
-    const fullStars = Math.round(book.rating); 
-
-    for (let i = 0; i < 5; i++) {
-        starsContainer.innerHTML += i < fullStars ? "⭐" : "☆";
+    const actionBtn = document.getElementById("actionBtn");
+    if (book.available_copies > 0) {
+        actionBtn.textContent = "Borrow Now";
+        actionBtn.onclick = borrowBook;
+    } else {
+        actionBtn.textContent = "Reserve";
+        actionBtn.onclick = reserveBook;
     }
+
+    document.getElementById("readBtn").onclick = () => {
+        document.getElementById("readBtn").classList.toggle("red-btn");
+    };
+
+    // Favorite Heart (left)
+    const heart = document.getElementById("favHeart");
+    const isFav = favorites.includes(bookId);
+    heart.innerHTML = isFav ? "❤️" : "♡";
+    heart.className = isFav ? "fav-heart favorited" : "fav-heart";
+    heart.onclick = (e) => {
+        e.stopPropagation();
+        toggleFavorite(bookId);
+    };
+
+    // Average rating stars (pink)
+    const starsDiv = document.getElementById("popupStars");
+    starsDiv.innerHTML = "";
+    for (let i = 1; i <= 5; i++) {
+        starsDiv.innerHTML += i <= Math.round(book.rating) ? "★" : "☆";
+    }
+
+    // User rating
+    const userRate = userRatings[bookId] || 0;
+    document.querySelectorAll(".rate-star").forEach(star => {
+        const val = parseInt(star.dataset.value);
+        star.innerHTML = val <= userRate ? "★" : "☆";
+        star.style.color = val <= userRate ? "#ff6b9d" : "#ddd";
+        star.onclick = (e) => {
+            e.stopPropagation();
+            rateBook(bookId, val);
+        };
+    });
 
     document.getElementById("popup").style.display = "flex";
 }
@@ -52,97 +107,141 @@ function closePopup() {
     document.getElementById("popup").style.display = "none";
 }
 
-// =============== DATA FILTERS & SORTING ===============
+// Actions (no full refresh)
+function borrowBook() {
+    const book = books.find(b => b.id === currentBookId);
+    if (book && book.available_copies > 0) {
+        book.available_copies--;
+        if (!borrowedBooks.includes(currentBookId)) borrowedBooks.push(currentBookId);
+        saveData();
+        alert("Borrowed successfully!");
+        openPopup(currentBookId); // Just refresh popup
+        updateDynamicSections();   // Only update borrowed & counts
+    }
+}
 
-// 1. الكتب الموصى بها (Recommended): أعلى تقييماً (أعلى من 4.7)
-const recommended = books.filter(book => book.rating >= 4.7);
+function reserveBook() {
+    if (!reservedBooks.includes(currentBookId)) {
+        reservedBooks.push(currentBookId);
+        saveData();
+        alert("Book reserved!");
+        updateDynamicSections();
+    }
+}
 
-// 2. الوافدون الجدد (New Arrivals): أحدث 4 كتب (فرز حسب تاريخ النشر)
-const validDateBooks = books.filter(book => book.publication_date && !isNaN(new Date(book.publication_date)));
-const newArrivals = validDateBooks.sort((a, b) => {
-    return new Date(b.publication_date) - new Date(a.publication_date); 
-}).slice(0, 4);
+function toggleFavorite(id) {
+    if (favorites.includes(id)) {
+        favorites = favorites.filter(f => f !== id);
+    } else {
+        favorites.push(id);
+    }
+    saveData();
+    openPopup(id);
+    updateDynamicSections();
+    updateAllFavoriteHearts(); // Update hearts on all cards
+}
 
-// 3. جميع الكتب (All Books): الآن تشمل جميع الكتب (بدون تصفية)
-const allBooks = books;
+function rateBook(id, rating) {
+    userRatings[id] = rating;
+    saveData();
+    openPopup(id);
+}
 
+// Update only dynamic sections (no full refresh)
+function updateDynamicSections() {
+    displayBooks(books.filter(b => borrowedBooks.includes(b.id)), "borrowedBooks");
+    displayBooks(books.filter(b => reservedBooks.includes(b.id)), "reservedBooks");
+    updateCounts();
+}
 
-// =============== DISPLAY Function ===============
-function displayBooks(data, containerId) {
+function updateAllFavoriteHearts() {
+    document.querySelectorAll('.book-card .fav-heart').forEach(heart => {
+        const card = heart.parentElement;
+        const bookId = parseInt(card.querySelector('img').alt.match(/\d+/) || card.querySelector('h4').innerText); // fallback
+        const idMatch = card.innerHTML.match(/toggleFavorite\((\d+)\)/);
+        if (idMatch) {
+            const id = parseInt(idMatch[1]);
+            const isFav = favorites.includes(id);
+            heart.innerHTML = isFav ? "❤️" : "♡";
+            heart.className = isFav ? "fav-heart favorited" : "fav-heart";
+        }
+    });
+}
+
+// Display function
+function displayBooks(list, containerId) {
     const container = document.getElementById(containerId);
+    if (!container) return;
     container.innerHTML = "";
-
-    data.forEach(book => {
+    list.forEach(book => {
         const div = document.createElement("div");
         div.className = "book-card";
-
+        const isFav = favorites.includes(book.id);
         div.innerHTML = `
-            <img src="${book.cover_image}" alt="Book Cover for ${book.title}">
+            <span class="fav-heart ${isFav ? 'favorited' : ''}" 
+                  onclick="event.stopPropagation(); toggleFavorite(${book.id})">
+                ${isFav ? '❤️' : '♡'}
+            </span>
+            <img src="${book.cover_image}" alt="${book.title}" onerror="this.src='https://via.placeholder.com/160x220?text=No+Image'">
             <h4>${book.title}</h4>
             <p>${book.category}</p>
             <span>⭐ ${book.rating} | $${book.price_per_day}/day</span>
         `;
-
-        div.onclick = () => openPopup(book.id); 
+        div.onclick = (e) => {
+            if (!e.target.classList.contains('fav-heart')) openPopup(book.id);
+        };
         container.appendChild(div);
     });
 }
 
-// =============== INITIAL LOAD & SEARCH ===============
+// Render all sections (only on load or search)
+function renderAll() {
+    const recommended = books
+        .filter(b => b.rating >= 4.7)
+        .sort((a, b) => b.rating - a.rating)
+        .slice(0, 3); // Only top 3
 
-displayBooks(recommended, "recommended");
-displayBooks(newArrivals, "newArrivals");
-displayBooks(allBooks, "allBooks");
+    const newArrivals = [...books]
+        .sort((a, b) => new Date(b.publication_date) - new Date(a.publication_date))
+        .slice(0, 4);
 
+    displayBooks(books.filter(b => borrowedBooks.includes(b.id)), "borrowedBooks");
+    displayBooks(books.filter(b => reservedBooks.includes(b.id)), "reservedBooks");
+    displayBooks(recommended, "recommended"); // Only 3
+    displayBooks(newArrivals, "newArrivals");
+    displayBooks(books.filter(b => b.category === "Business & Finance"), "category-business");
+    displayBooks(books.filter(b => b.category === "Arabic Literature"), "category-arabic");
+    displayBooks(books.filter(b => b.category === "Fantasy & Adventure"), "category-fantasy");
+    displayBooks(books.filter(b => b.category === "Self-Development"), "category-selfdev");
+    displayBooks(books.filter(b => b.category === "Self-Help & Psychology"), "category-psychology");
+    displayBooks(books, "allBooks");
+    updateCounts();
+}
 
+// Search
 document.getElementById("searchInput").addEventListener("keyup", function () {
-    const value = this.value.toLowerCase().trim();
+    const term = this.value.toLowerCase();
+    const filtered = books.filter(b => 
+        b.title.toLowerCase().includes(term) || 
+        b.category.toLowerCase().includes(term)
+    );
 
-    const recommendedContainer = document.getElementById("recommended");
-    const newArrivalsContainer = document.getElementById("newArrivals");
-    const allBooksContainer = document.getElementById("allBooks");
-
-    const recommendedTitle = recommendedContainer.previousElementSibling;
-    const newArrivalsTitle = newArrivalsContainer.previousElementSibling;
-    const allBooksTitle = allBooksContainer.previousElementSibling;
-
-    if (value) {
-        const filtered = books.filter(book =>
-            book.title.toLowerCase().includes(value)
-        );
-
-        
-        displayBooks([], "recommended"); 
-        displayBooks([], "newArrivals");  
-        displayBooks(filtered, "allBooks"); 
-        
-      
-        if(recommendedTitle) recommendedTitle.style.display = 'none';
-        if(newArrivalsTitle) newArrivalsTitle.style.display = 'none';
-        
-        if(allBooksTitle) {
-            allBooksTitle.style.display = 'block';
-            allBooksTitle.innerText = `Search Results (${filtered.length})`;
-        }
-
-
+    if (term) {
+        document.querySelectorAll(".main-content h2").forEach(h2 => {
+            const section = h2.nextElementSibling;
+            if (section && section.id !== "allBooks") {
+                h2.style.display = "none";
+                section.style.display = "none";
+            }
+        });
     } else {
-
-        displayBooks(recommended, "recommended");
-        displayBooks(newArrivals, "newArrivals");
-        displayBooks(allBooks, "allBooks"); 
-        
-        if(recommendedTitle) {
-            recommendedTitle.style.display = 'block';
-            recommendedTitle.innerText = 'Recommended for You';
-        }
-        if(newArrivalsTitle) {
-            newArrivalsTitle.style.display = 'block';
-            newArrivalsTitle.innerText = 'New Arrivals';
-        }
-        if(allBooksTitle) {
-            allBooksTitle.style.display = 'block';
-            allBooksTitle.innerText = 'All Books';
-        }
+        document.querySelectorAll(".main-content h2").forEach(h2 => {
+            h2.style.display = "block";
+            if (h2.nextElementSibling) h2.nextElementSibling.style.display = "grid";
+        });
     }
+    displayBooks(filtered, "allBooks");
 });
+
+// Initial load
+renderAll();
