@@ -387,18 +387,20 @@ END FUNCTION
 
 ### ✅ Each Member Contributed in a Valuable Way
 
-**Contribution Areas:**
+### 📌 Team Contributions
 
-- **Hasnaa Mohamed Azab  23011069 ** Business logic , Mysql , Database schema, triggers, stored procedures ,views ,Testing.
-- **Maryam Hafez saeed 23011150 ** ERD ,Testing
-- **Shahd Waleed Baioumy 23010091 ** Authors' information page (Author ,details about Author)
-- **Basmala Mahmoud El-Sayed 230140** admin Dashboard and chatbot
-- **Ghada Ragab 23011119 ** profiles: User, Admin, Librarian — and connect all pages.
-- **Asmaa Abdullah 23011043 ** Manage Books and Manage Authors Pages
-- **Malak Rabie Ahmed Rabie 23011558 ** Login, Register, and Home pages
-- **Mariam Farag Magdy 23011531 ** Books' information page (Books ,details about Book)
-- **Rania Ali Abouzeid 23010113 ** Manage Quotes and Quotes pages
-- **Tasbeeh Mohamed 23011057 ** librarian mangement and member mangement pages
+| Student Name                     | ID        | Contribution |
+|----------------------------------|-----------|--------------|
+| Hasnaa Mohamed Azab             | 23011069  | Business logic, MySQL, Database schema, triggers, stored procedures, views, Testing |
+| Maryam Hafez Saeed              | 23011150  | ERD, Testing |
+| Shahd Waleed Baioumy            | 23010091  | Authors' information page (Author, details about Author) |
+| Basmala Mahmoud El-Sayed        | 23010140  | Admin Dashboard and Chatbot |
+| Ghada Ragab                     | 23011119  | Profiles: User, Admin, Librarian — and connecting all system pages |
+| Asmaa Abdullah                  | 23011043  | Manage Books and Manage Authors pages |
+| Malak Rabie Ahmed Rabie         | 23011558  | Login, Register, and Home pages |
+| Mariam Farag Magdy              | 23011531  | Books' information page (Books, details about Book) |
+| Rania Ali Abouzeid              | 23010113  | Manage Quotes and Quotes pages |
+| Tasbeeh Mohamed                 | 23011057  | Librarian management and Member management pages |
 
 **Evidence of Individual Contributions:**
 - Commit history shows diverse contributions
