@@ -11,7 +11,7 @@ const initialAuthors = [
         nationality: "American",
         biography: "American businessman and author of Rich Dad Poor Dad.",
         birthDate: "1947-04-08",
-        photo: "https://images-na.ssl-images-amazon.com/images/P/B00QQSGE5W.01.L.jpg",
+        photo: "https://richdad.com/wp-content/uploads/2025/06/robert-holding-rdpd-both-hands6567-crop01.png",
         books: [1, 2]
     },
     {
@@ -20,7 +20,7 @@ const initialAuthors = [
         nationality: "British",
         biography: "British author, creator of the Harry Potter fantasy series.",
         birthDate: "1965-07-31",
-        photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/J.K._Rowling_2010.jpg/440px-J.K._Rowling_2010.jpg",
+        photo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiSAmttfeMfKBgiz1kji8KZuOrx7EKeq50H6Ma_opPtDo8GB0vW6B5971XPitliMPMrWQR3w&s",
         books: [3, 4]
     },
     {
@@ -29,7 +29,7 @@ const initialAuthors = [
         nationality: "Egyptian",
         biography: "Egyptian Nobel Prize-winning author, known for Cairo Trilogy.",
         birthDate: "1911-12-11",
-        photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Naguib_Mahfouz_nobel.jpg/440px-Naguib_Mahfouz_nobel.jpg",
+        photo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRptZHpWgN_d9LDxsRJn97AB2WrQbUvlp9yNHK-UPmM0fFJTCa4no6sVGuwU8Li9VXUPOF68serQBwxdrq_ZyOskWBZCf9qpxwSPalLQX8tgg&s=10",
         books: [5, 6]
     },
     {
@@ -38,7 +38,7 @@ const initialAuthors = [
         nationality: "American",
         biography: "Prolific American author known for horror and suspense novels.",
         birthDate: "1947-09-21",
-        photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Stephen_King%2C_2013.jpg/440px-Stephen_King%2C_2013.jpg",
+        photo: "https://i.guim.co.uk/img/media/56be7b100f9704b507dbac33715297ae2f5bd11e/0_491_4024_2414/master/4024.jpg?width=1200&quality=85&auto=format&fit=max&s=6e21ac79a974ab9293cd1d138c43113c",
         books: [7, 8]
     },
     {
@@ -47,7 +47,7 @@ const initialAuthors = [
         nationality: "British",
         biography: "English writer, known as the Queen of Detective Fiction.",
         birthDate: "1890-01-15",
-        photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Agatha_Christie_1945.jpg/440px-Agatha_Christie_1945.jpg",
+        photo: "https://cdn.britannica.com/18/12918-050-72F3A354/Agatha-Christie-1946.jpg",
         books: [9, 10]
     },
     {
@@ -56,7 +56,7 @@ const initialAuthors = [
         nationality: "Brazilian",
         biography: "Brazilian lyricist and author, famous for The Alchemist.",
         birthDate: "1947-08-24",
-        photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Paulo_Coelho_2008.jpg/440px-Paulo_Coelho_2008.jpg",
+        photo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaBTN5fuKujQM2oc_eJbr393FYMRqlY5GfWGUlc5XW0ww3oKMnzYb07OcLWEXF4ne-hq0zZvXAp8JGMIhfDSSn4FQMKzKWqKlBc-FDrg&s=10",
         books: [11]
     },
     {
@@ -65,7 +65,7 @@ const initialAuthors = [
         nationality: "American",
         biography: "American novelist, famous for A Song of Ice and Fire series.",
         birthDate: "1948-09-20",
-        photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/George_R._R._Martin_2019_by_Gage_Skidmore.jpg/440px-George_R._R._Martin_2019_by_Gage_Skidmore.jpg",
+        photo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREutx5vIrFIYohjgUgjS71WoimBb9qUueXYqGYPIu-g21_mzqem4ytDeV7kRQZ8-rgqD93IpHd0fG4ZmKyx6pimqJKjpDgX4Moot73ta8&s=10",
         books: [12, 13]
     },
     {
@@ -74,7 +74,7 @@ const initialAuthors = [
         nationality: "Nigerian",
         biography: "Nigerian-American author known for contemporary African narratives.",
         birthDate: "1977-05-15",
-        photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Chimamanda_Ngozi_Adichie_%282018%29_by_Gage_Skidmore.jpg/440px-Chimamanda_Ngozi_Adichie_%282018%29_by_Gage_Skidmore.jpg",
+        photo: "https://ichef.bbci.co.uk/ace/standard/976/cpsprodpb/C28A/production/_92020894_hi017748493_bbc.jpg",
         books: [14]
     },
     {
@@ -83,7 +83,7 @@ const initialAuthors = [
         nationality: "Canadian",
         biography: "Canadian author known for speculative fiction and poetry.",
         birthDate: "1939-11-18",
-        photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Margaret_Atwood_%2851189156667%29_%28cropped%29.jpg/440px-Margaret_Atwood_%2851189156667%29_%28cropped%29.jpg",
+        photo: "https://thegentlewoman.co.uk/img/YWJOYkVodmFUNHM5bTArbWhuY1pHdz09/margaret-2.jpg",
         books: [15]
     },
     {
@@ -92,29 +92,29 @@ const initialAuthors = [
         nationality: "Japanese",
         biography: "Japanese author known for surreal and imaginative fiction.",
         birthDate: "1949-01-09",
-        photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Haruki_Murakami_photo_20101021.jpg/440px-Haruki_Murakami_photo_20101021.jpg",
+        photo: "https://static01.nyt.com/images/2011/10/23/magazine/23murakami1_span/23murakami1_span-articleLarge.jpg?year=2011&h=478&w=600&s=60526c9c5fa0b415fc3976ba9f5cd59fb90c72f01a7a71d68e4d42604c7457e2&k=ZQJBKqZ0VN",
         books: [16, 17]
     }
 ];
 
 const initialBooks = [
-    { id: 1, title: "Rich Dad Poor Dad", authorId: 1, isbn: "0671015906", copies: 3, status: "Available", photo: "https://images-na.ssl-images-amazon.com/images/P/B00QJB4GOU.01.L.jpg" },
-    { id: 2, title: "Cashflow Quadrant", authorId: 1, isbn: "0892399235", copies: 2, status: "Available", photo: "https://images-na.ssl-images-amazon.com/images/P/B000SEODAM.01.L.jpg" },
-    { id: 3, title: "Harry Potter and the Philosopher's Stone", authorId: 2, isbn: "9780747532699", copies: 5, status: "Available", photo: "https://images-na.ssl-images-amazon.com/images/P/B0192CTPYG.01.L.jpg" },
-    { id: 4, title: "Harry Potter and the Chamber of Secrets", authorId: 2, isbn: "9780747538493", copies: 4, status: "Borrowed", photo: "https://images-na.ssl-images-amazon.com/images/P/B0192D00UO.01.L.jpg" },
-    { id: 5, title: "Palace Walk", authorId: 3, isbn: "9789774249143", copies: 2, status: "Available", photo: "https://images-na.ssl-images-amazon.com/images/P/B01GTQHAHY.01.L.jpg" },
-    { id: 6, title: "Cairo Trilogy", authorId: 3, isbn: "9789774249150", copies: 1, status: "Overdue", photo: "https://images-na.ssl-images-amazon.com/images/P/B01IW4TUJI.01.L.jpg" },
-    { id: 7, title: "The Shining", authorId: 4, isbn: "0385333312", copies: 3, status: "Available", photo: "https://images-na.ssl-images-amazon.com/images/P/B008XHZB8M.01.L.jpg" },
-    { id: 8, title: "It", authorId: 4, isbn: "0451191382", copies: 2, status: "Borrowed", photo: "https://images-na.ssl-images-amazon.com/images/P/B009NFJPDA.01.L.jpg" },
-    { id: 9, title: "Murder on the Orient Express", authorId: 5, isbn: "0062693980", copies: 4, status: "Available", photo: "https://images-na.ssl-images-amazon.com/images/P/B00N8D90WY.01.L.jpg" },
-    { id: 10, title: "And Then There Were None", authorId: 5, isbn: "0062693980", copies: 3, status: "Available", photo: "https://images-na.ssl-images-amazon.com/images/P/B0086YDO1I.01.L.jpg" },
-    { id: 11, title: "The Alchemist", authorId: 6, isbn: "0062315005", copies: 5, status: "Available", photo: "https://images-na.ssl-images-amazon.com/images/P/B08F7GRXMT.01.L.jpg" },
-    { id: 12, title: "A Game of Thrones", authorId: 7, isbn: "0553103547", copies: 2, status: "Available", photo: "https://images-na.ssl-images-amazon.com/images/P/B000QCS8TW.01.L.jpg" },
-    { id: 13, title: "A Clash of Kings", authorId: 7, isbn: "0553108034", copies: 2, status: "Borrowed", photo: "https://images-na.ssl-images-amazon.com/images/P/B000FC0OUY.01.L.jpg" },
-    { id: 14, title: "Americanah", authorId: 8, isbn: "0307271560", copies: 3, status: "Available", photo: "https://images-na.ssl-images-amazon.com/images/P/B009NFJPDA.01.L.jpg" },
-    { id: 15, title: "The Handmaid's Tale", authorId: 9, isbn: "0385490232", copies: 2, status: "Available", photo: "https://images-na.ssl-images-amazon.com/images/P/B003JFJHTS.01.L.jpg" },
-    { id: 16, title: "Norwegian Wood", authorId: 10, isbn: "0099448017", copies: 3, status: "Available", photo: "https://images-na.ssl-images-amazon.com/images/P/B001JKRL4O.01.L.jpg" },
-    { id: 17, title: "Kafka on the Shore", authorId: 10, isbn: "0099458322", copies: 2, status: "Overdue", photo: "https://images-na.ssl-images-amazon.com/images/P/B0031JSNAY.01.L.jpg" }
+    { id: 1, title: "Rich Dad Poor Dad", authorId: 1, isbn: "0671015906", copies: 3, status: "Available", photo: "https://m.media-amazon.com/images/I/61M1eEsuSML._AC_UF1000,1000_QL80_.jpg" },
+    { id: 2, title: "Cashflow Quadrant", authorId: 1, isbn: "0892399235", copies: 2, status: "Available", photo: "https://diwanegypt.com/wp-content/uploads/2021/10/9781612680064.jpg" },
+    { id: 3, title: "Harry Potter and the Philosopher's Stone", authorId: 2, isbn: "9780747532699", copies: 5, status: "Available", photo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQttbZNVGzKnwLBGXrKBkt0VY2J2DubjnH_lSQrJCzdSf5fe4OK8yUM27EYhteFc68Ii7Xr9g&s=10" },
+    { id: 4, title: "Harry Potter and the Chamber of Secrets", authorId: 2, isbn: "9780747538493", copies: 4, status: "Borrowed", photo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1rI0fB3GdfQCFT3HYWrIIreGt74rV1R0n8JgYUmXtzMeOCdIKv4MdmSafc0hi7DksbRtO&s=10" },
+    { id: 5, title: "Palace Walk", authorId: 3, isbn: "9789774249143", copies: 2, status: "Available", photo: "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1644747130i/762134.jpg" },
+    { id: 6, title: "Cairo Trilogy", authorId: 3, isbn: "9789774249150", copies: 1, status: "Overdue", photo: "https://usercontent.one/wp/www.ravimagazine.com/wp-content/uploads/2016/01/egyptian-trilology1.jpg?media=1756411367" },
+    { id: 7, title: "The Shining", authorId: 4, isbn: "0385333312", copies: 3, status: "Available", photo: "https://m.media-amazon.com/images/M/MV5BNmM5ZThhY2ItOGRjOS00NzZiLWEwYTItNDgyMjFkOTgxMmRiXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" },
+    { id: 8, title: "It", authorId: 4, isbn: "0451191382", copies: 2, status: "Borrowed", photo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcSh7zXxw6k-D7nceuqme8Ko7TMhd_PVzDCg&s" },
+{ id: 9, title: "Murder on the Orient Express", authorId: 5, isbn: "0062693980", copies: 4, status: "Available", photo: "https://lumiere-a.akamaihd.net/v1/images/image_37a1eab9.jpeg?region=0%2C0%2C1400%2C2100" },
+    { id: 10, title: "And Then There Were None", authorId: 5, isbn: "0062693980", copies: 3, status: "Available", photo: "https://m.media-amazon.com/images/M/MV5BMjcwYTg5ZWEtMGYwMy00NmVkLWE4NGEtNmJmZTMzMDE2MDNiXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" },
+    { id: 11, title: "The Alchemist", authorId: 6, isbn: "0062315005", copies: 5, status: "Available", photo: "https://prodimage.images-bn.com/pimages/9780062315007_p0_v3_s1200x630.jpg" },
+    { id: 12, title: "A Game of Thrones", authorId: 7, isbn: "0553103547", copies: 2, status: "Available", photo: "https://m.media-amazon.com/images/M/MV5BMTNhMDJmNmYtNDQ5OS00ODdlLWE0ZDAtZTgyYTIwNDY3OTU3XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" },
+    { id: 13, title: "A Clash of Kings", authorId: 7, isbn: "0553108034", copies: 2, status: "Borrowed", photo: "https://m.media-amazon.com/images/I/91c5Z3pXhtL._AC_UF1000,1000_QL80_.jpg" },
+    { id: 14, title: "Americanah", authorId: 8, isbn: "0307271560", copies: 3, status: "Available", photo: "https://prodimage.images-bn.com/pimages/9780307455925_p0_v5_s1200x630.jpg" },
+    { id: 15, title: "The Handmaid's Tale", authorId: 9, isbn: "0385490232", copies: 2, status: "Available", photo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCIQXUigCe_VorUn4Zabj6_tEMw6RDCC0iqjO6-67vs67Y5b6LruMxZlIz0qXnTGjXN4CQTg&s=10" },
+    { id: 16, title: "Norwegian Wood", authorId: 10, isbn: "0099448017", copies: 3, status: "Available", photo: "https://images.squarespace-cdn.com/content/v1/5ae815c95b409b2edc74c363/1560821457407-28Y3VD3GUSEW9D613PXR/Norwegian+Wood" },
+    { id: 17, title: "Kafka on the Shore", authorId: 10, isbn: "0099458322", copies: 2, status: "Overdue", photo: "https://blog.streetwriters.co/media/posts/86/kafka2.jpeg" }
 ];
 
 // ===== LOCALSTORAGE UTILITIES =====
@@ -774,5 +774,6 @@ function initializePage() {
     populateBooksTable(getBooks());
   }
 }
+
 
 document.addEventListener('DOMContentLoaded', initializePage);
